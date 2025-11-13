@@ -177,8 +177,6 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <Separator />
                   <InfoRow label={t.schoolType} value={school.學校類別1} icon={Building2} />
                   <Separator />
-                  <InfoRow label={t.classTime} value={school.學校類別2} />
-                  <Separator />
                   <InfoRow label={t.supervisor} value={formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名)} />
                   <Separator />
                   <InfoRow label={t.principal} value={formatName(school.校長稱謂, school.校長姓名)} />
@@ -201,7 +199,8 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                 </CardContent>
               </Card>
 
-              {((school.一般上學時間 && school.一般上學時間 !== '-') || 
+              {((school.學校類別2 && school.學校類別2 !== '-') ||
+                (school.一般上學時間 && school.一般上學時間 !== '-') || 
                 (school.一般放學時間 && school.一般放學時間 !== '-') || 
                 (school.校車 && school.校車 !== '-') || 
                 (school.保姆車 && school.保姆車 !== '-')) && (
@@ -210,6 +209,12 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                     <CardTitle className="text-base">{language === 'tc' ? '上課時間及交通' : '上课时间及交通'}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-1">
+                    <InfoRow label={t.classTime} value={school.學校類別2} />
+                    {(school.學校類別2 && school.學校類別2 !== '-' && 
+                      ((school.一般上學時間 && school.一般上學時間 !== '-') || 
+                       (school.一般放學時間 && school.一般放學時間 !== '-') || 
+                       (school.校車 && school.校車 !== '-') || 
+                       (school.保姆車 && school.保姆車 !== '-'))) && <Separator />}
                     <InfoRow label={t.generalArrivalTime} value={school.一般上學時間} />
                     {(school.一般上學時間 && school.一般上學時間 !== '-' && 
                       ((school.一般放學時間 && school.一般放學時間 !== '-') || 
@@ -358,50 +363,76 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                 <CardHeader>
                   <CardTitle className="text-base">{t.facilities}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-1">
-                  <InfoRow label={t.classrooms} value={school.課室數目} />
-                  <Separator />
-                  <InfoRow label={t.halls} value={school.禮堂數目} />
-                  <Separator />
-                  <InfoRow label={t.playgrounds} value={school.操場數目} />
-                  <Separator />
-                  <InfoRow label={t.libraries} value={school.圖書館數目} />
+                <CardContent className="space-y-3">
+                  {(() => {
+                    const numericFacilities = [
+                      { label: t.classrooms, value: school.課室數目 },
+                      { label: t.halls, value: school.禮堂數目 },
+                      { label: t.playgrounds, value: school.操場數目 },
+                      { label: t.libraries, value: school.圖書館數目 },
+                    ].filter(f => f.value && f.value !== '-');
+                    
+                    return numericFacilities.length > 0 ? (
+                      <div className="space-y-1">
+                        {numericFacilities.map((facility, idx) => (
+                          <div key={idx}>
+                            <InfoRow label={facility.label} value={facility.value} />
+                            {idx < numericFacilities.length - 1 && <Separator />}
+                          </div>
+                        ))}
+                      </div>
+                    ) : null;
+                  })()}
+
+                  {school.特別室 && school.特別室 !== '-' && (
+                    <>
+                      <Separator />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-2">{t.specialRooms}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {school.特別室.split('、').map((room, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              {convertText(room.trim())}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {school.其他學校設施 && school.其他學校設施 !== '-' && (
+                    <>
+                      <Separator />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-2">{t.otherFacilities}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {school.其他學校設施.split('、').map((facility, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              {convertText(facility.trim())}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {school.支援有特殊教育需要學生的設施 && school.支援有特殊教育需要學生的設施 !== '-' && (
+                    <>
+                      <Separator />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-2">{t.senSupportFacilities}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {school.支援有特殊教育需要學生的設施.split('、').map((facility, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              {convertText(facility.trim())}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </CardContent>
               </Card>
-
-              {school.特別室 && school.特別室 !== '-' && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">{t.specialRooms}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-1.5">
-                      {school.特別室.split('、').map((room, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {convertText(room.trim())}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {school.其他學校設施 && school.其他學校設施 !== '-' && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">{t.otherFacilities}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-1.5">
-                      {school.其他學校設施.split('、').map((facility, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {convertText(facility.trim())}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
             </TabsContent>
 
             <TabsContent value="classes" className="space-y-3">
@@ -534,12 +565,35 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                 <CardHeader>
                   <CardTitle className="text-base">{t.fees}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-1">
-                  <InfoRow label={t.tuition} value={school.學費} icon={DollarSign} />
-                  <Separator />
-                  <InfoRow label={t.misc} value={school.堂費} />
-                  <Separator />
-                  <InfoRow label={t.ptaFee} value={school.家長教師會費} />
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-xs font-medium">{language === 'tc' ? '費用項目' : '费用项目'}</TableHead>
+                        <TableHead className="text-xs font-medium text-right">{language === 'tc' ? '金額' : '金额'}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="text-sm">{t.tuition}</TableCell>
+                        <TableCell className="text-sm text-right">
+                          {convertText(school.學費 && school.學費 !== '-' ? school.學費 : t.noData)}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-sm">{t.ptaFee}</TableCell>
+                        <TableCell className="text-sm text-right">
+                          {convertText(school.家長教師會費 && school.家長教師會費 !== '-' ? school.家長教師會費 : t.noData)}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-sm">{t.nonStandardFees}</TableCell>
+                        <TableCell className="text-sm text-right">
+                          {convertText(school.非標準項目的核准收費 && school.非標準項目的核准收費 !== '-' ? school.非標準項目的核准收費 : t.noData)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </TabsContent>
