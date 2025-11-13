@@ -5,7 +5,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { FilterState } from '@shared/school-schema';
@@ -16,24 +15,9 @@ interface FilterSidebarProps {
   onClose?: () => void;
 }
 
-// Grouped region options
-const regionGroups = {
-  香港: ['香港東區', '南區', '灣仔區', '中西區'],
-  九龍: ['九龍城區', '觀塘區', '深水埗區', '油尖旺區', '黃大仙區'],
-  新界: ['沙田區', '大埔區', '北區', '元朗區', '屯門區', '荃灣區', '葵青區', '離島區', '西貢區'],
-};
-
-// Grouped school net options
-const schoolNetGroups = {
-  '10-20': ['11', '12', '14', '16', '18'],
-  '30-50': ['31', '32', '34', '35', '40', '41', '43', '45', '46', '48'],
-  '60-70': ['62', '65', '66', '70', '72', '74'],
-  '80-98': ['80', '81', '83', '84', '88', '89', '91', '95', '97', '98'],
-};
-
 const filterOptions = {
-  區域: Object.values(regionGroups).flat(),
-  校網: Object.values(schoolNetGroups).flat(),
+  區域: ['香港東區', '南區', '灣仔區', '中西區', '九龍城區', '觀塘區', '深水埗區', '油尖旺區', '黃大仙區', '沙田區', '大埔區', '北區', '元朗區', '屯門區', '荃灣區', '葵青區', '離島區', '西貢區'],
+  校網: ['11', '12', '14', '16', '18', '31', '32', '34', '35', '40', '41', '43', '45', '46', '48', '62', '65', '66', '70', '72', '74', '80', '81', '83', '84', '88', '89', '91', '95', '97', '98'],
   資助類型: ['資助', '官立', '私立', '直資'],
   學生性別: ['男女', '男', '女'],
   宗教: ['基督教', '天主教', '佛教', '不適用'],
@@ -44,8 +28,6 @@ const filterOptions = {
 export default function FilterSidebar({ filters, onFilterChange, onClose }: FilterSidebarProps) {
   const { t, convertText, language } = useLanguage();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    區域: true,
-    校網: false,
     資助類型: true,
     學生性別: true,
     宗教: false,
@@ -151,10 +133,9 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
     );
   };
 
-  const renderGroupedRegions = () => {
+  const renderRegionFilter = () => {
     const searchTerm = searchTerms['區域'] || '';
-    const allRegions = Object.values(regionGroups).flat();
-    const filteredRegions = filterOptionsBySearch(allRegions, searchTerm);
+    const filteredRegions = filterOptionsBySearch(filterOptions['區域'], searchTerm);
 
     return (
       <>
@@ -176,10 +157,9 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
     );
   };
 
-  const renderGroupedSchoolNets = () => {
+  const renderSchoolNetFilter = () => {
     const searchTerm = searchTerms['校網'] || '';
-    const allNets = Object.values(schoolNetGroups).flat();
-    const filteredNets = filterOptionsBySearch(allNets, searchTerm);
+    const filteredNets = filterOptionsBySearch(filterOptions['校網'], searchTerm);
 
     return (
       <>
@@ -196,7 +176,7 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
             />
           </div>
         </div>
-        {renderCheckboxGrid('校網', filteredNets)}
+        {renderCheckboxGrid('校網', filteredNets, 2)}
       </>
     );
   };
@@ -243,35 +223,27 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
         </div>
       )}
 
-      <ScrollArea className="flex-1">
-        <div className="p-3 space-y-2">
-          {/* 區域 filter with grouped grid */}
-          <Collapsible
-            open={openSections['區域']}
-            onOpenChange={() => toggleSection('區域')}
-          >
-            <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1.5 hover-elevate active-elevate-2 rounded-md" data-testid="button-toggle-區域">
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-3 space-y-4">
+          {/* 區域 filter with flat list */}
+          <div>
+            <div className="px-2 py-1.5 mb-2">
               <span className="font-medium text-xs">{t.region}</span>
-              <ChevronDown className={`h-3 w-3 transition-transform ${openSections['區域'] ? 'rotate-180' : ''}`} />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="pt-2 pl-2">
-              {renderGroupedRegions()}
-            </CollapsibleContent>
-          </Collapsible>
+            </div>
+            <div className="pl-2">
+              {renderRegionFilter()}
+            </div>
+          </div>
 
-          {/* 校網 filter with grouped grid */}
-          <Collapsible
-            open={openSections['校網']}
-            onOpenChange={() => toggleSection('校網')}
-          >
-            <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1.5 hover-elevate active-elevate-2 rounded-md" data-testid="button-toggle-校網">
+          {/* 校網 filter with flat list */}
+          <div>
+            <div className="px-2 py-1.5 mb-2">
               <span className="font-medium text-xs">{t.schoolNet}</span>
-              <ChevronDown className={`h-3 w-3 transition-transform ${openSections['校網'] ? 'rotate-180' : ''}`} />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="pt-2 pl-2">
-              {renderGroupedSchoolNets()}
-            </CollapsibleContent>
-          </Collapsible>
+            </div>
+            <div className="pl-2">
+              {renderSchoolNetFilter()}
+            </div>
+          </div>
 
           {/* Other filters with simple layout */}
           {(['資助類型', '學生性別', '宗教', '教學語言', '關聯學校'] as const).map((category) => (
@@ -292,7 +264,7 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
             </Collapsible>
           ))}
         </div>
-      </ScrollArea>
+      </div>
 
       {hasActiveFilters && (
         <div className="p-3 border-t">
