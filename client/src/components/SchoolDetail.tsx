@@ -199,11 +199,32 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <Separator />
                   <InfoRow label={t.schoolBoard} value={school.法團校董會} />
                   <Separator />
+                  <InfoRow label={t.pta} value={school.家長教師會} />
+                  <Separator />
                   <InfoRow label={t.schoolBus} value={school.校車} />
                   <Separator />
-                  <InfoRow label={t.pta} value={school.家長教師會} />
+                  <InfoRow label={t.nannyBus} value={school.保姆車} />
+                  <Separator />
+                  <InfoRow label={t.generalArrivalTime} value={school.一般上學時間} />
+                  <Separator />
+                  <InfoRow label={t.generalDismissalTime} value={school.一般放學時間} />
                 </CardContent>
               </Card>
+
+              {(school.午膳開始時間 || school.午膳結束時間 || school.午膳安排) && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">{language === 'tc' ? '午膳安排' : '午膳安排'}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-1">
+                    <InfoRow label={t.lunchStartTime} value={school.午膳開始時間} />
+                    <Separator />
+                    <InfoRow label={t.lunchEndTime} value={school.午膳結束時間} />
+                    <Separator />
+                    <InfoRow label={t.lunchArrangement} value={school.午膳安排} />
+                  </CardContent>
+                </Card>
+              )}
 
               {school.辦學宗旨 && (
                 <Card>
@@ -306,10 +327,6 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <InfoRow label={t.playgrounds} value={school.操場數目} />
                   <Separator />
                   <InfoRow label={t.libraries} value={school.圖書館數目} />
-                  <Separator />
-                  <InfoRow label={t.schoolBus} value={school.校車} />
-                  <Separator />
-                  <InfoRow label={t.nannyBus} value={school.保姆車} />
                 </CardContent>
               </Card>
 

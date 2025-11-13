@@ -121,6 +121,11 @@ export const translations = {
     experience5to9: '5-9年',
     experience10plus: '10年以上',
     specialEducation: '特殊教育',
+    generalArrivalTime: '一般上學時間',
+    generalDismissalTime: '一般放學時間',
+    lunchStartTime: '午膳開始時間',
+    lunchEndTime: '午膳結束時間',
+    lunchArrangement: '午膳安排',
     
     // Categories
     categories: {
@@ -259,6 +264,11 @@ export const translations = {
     experience5to9: '5-9年',
     experience10plus: '10年以上',
     specialEducation: '特殊教育',
+    generalArrivalTime: '一般上学时间',
+    generalDismissalTime: '一般放学时间',
+    lunchStartTime: '午膳开始时间',
+    lunchEndTime: '午膳结束时间',
+    lunchArrangement: '午膳安排',
     
     // Categories
     categories: {

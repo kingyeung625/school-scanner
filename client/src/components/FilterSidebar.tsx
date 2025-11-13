@@ -153,14 +153,8 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
 
   const renderGroupedRegions = () => {
     const searchTerm = searchTerms['區域'] || '';
-    const filteredGroups: Record<string, string[]> = {};
-    
-    Object.entries(regionGroups).forEach(([groupName, regions]) => {
-      const filtered = filterOptionsBySearch(regions, searchTerm);
-      if (filtered.length > 0) {
-        filteredGroups[groupName] = filtered;
-      }
-    });
+    const allRegions = Object.values(regionGroups).flat();
+    const filteredRegions = filterOptionsBySearch(allRegions, searchTerm);
 
     return (
       <>
@@ -177,32 +171,15 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
             />
           </div>
         </div>
-        <ScrollArea className="max-h-[240px]">
-          <div className="space-y-3">
-            {Object.entries(filteredGroups).map(([groupName, regions]) => (
-              <div key={groupName}>
-                <div className="text-xs font-medium text-muted-foreground mb-1.5">
-                  {convertText(groupName)}
-                </div>
-                {renderCheckboxGrid('區域', regions, 2)}
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+        {renderCheckboxGrid('區域', filteredRegions)}
       </>
     );
   };
 
   const renderGroupedSchoolNets = () => {
     const searchTerm = searchTerms['校網'] || '';
-    const filteredGroups: Record<string, string[]> = {};
-    
-    Object.entries(schoolNetGroups).forEach(([groupName, nets]) => {
-      const filtered = filterOptionsBySearch(nets, searchTerm);
-      if (filtered.length > 0) {
-        filteredGroups[groupName] = filtered;
-      }
-    });
+    const allNets = Object.values(schoolNetGroups).flat();
+    const filteredNets = filterOptionsBySearch(allNets, searchTerm);
 
     return (
       <>
@@ -219,18 +196,7 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
             />
           </div>
         </div>
-        <ScrollArea className="max-h-[240px]">
-          <div className="space-y-3">
-            {Object.entries(filteredGroups).map(([groupName, nets]) => (
-              <div key={groupName}>
-                <div className="text-xs font-medium text-muted-foreground mb-1.5">
-                  {groupName}
-                </div>
-                {renderCheckboxGrid('校網', nets, 2)}
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+        {renderCheckboxGrid('校網', filteredNets)}
       </>
     );
   };
