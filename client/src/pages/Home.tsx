@@ -10,17 +10,20 @@ import ComparisonBar from '@/components/ComparisonBar';
 import SchoolDetail from '@/components/SchoolDetail';
 import ComparisonView from '@/components/ComparisonView';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { convertToSimplified } from '@/lib/i18n';
 import { mockSchools } from '@/lib/mockSchools';
 import type { FilterState, School } from '@shared/school-schema';
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, convertText, language } = useLanguage();
   const [filters, setFilters] = useState<FilterState>({
     區域: [],
     學校類別1: [],
     學生性別: [],
     宗教: [],
     教學語言: [],
+    校網: [],
+    師資: [],
     searchQuery: '',
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,8 +35,25 @@ export default function Home() {
   // TODO: remove mock functionality - replace with real data from API
   const filteredSchools = useMemo(() => {
     return mockSchools.filter((school) => {
-      if (searchQuery && !school.學校名稱.toLowerCase().includes(searchQuery.toLowerCase())) {
-        return false;
+      // Search in school name AND special features (bidirectional TC/SC matching)
+      if (searchQuery) {
+        // Normalize to Simplified Chinese for language-agnostic comparison
+        // This allows TC users to search with SC characters and vice versa
+        const query = convertToSimplified(searchQuery).toLowerCase();
+        
+        // Helper to normalize and lowercase any text for matching
+        const normalizeAndLower = (text: string) => {
+          if (!text) return '';
+          return convertToSimplified(text).toLowerCase();
+        };
+        
+        const nameMatch = normalizeAndLower(school.學校名稱).includes(query);
+        const featuresMatch = school.特別室 ? normalizeAndLower(school.特別室).includes(query) : false;
+        const facilitiesMatch = school.其他學校設施 ? normalizeAndLower(school.其他學校設施).includes(query) : false;
+        
+        if (!nameMatch && !featuresMatch && !facilitiesMatch) {
+          return false;
+        }
       }
       
       if (filters.區域.length > 0 && !filters.區域.includes(school.區域)) {
@@ -56,9 +76,64 @@ export default function Home() {
         return false;
       }
       
+      // Filter by school network (校網) - handle multi-district codes like "11/12"
+      if (filters.校網.length > 0) {
+        if (!school.小一學校網 || school.小一學校網 === '/' || school.小一學校網.trim() === '') {
+          return false;
+        }
+        const schoolNetworks = school.小一學校網.split('/').map(n => n.trim());
+        const hasMatch = schoolNetworks.some(network => filters.校網.includes(network));
+        if (!hasMatch) {
+          return false;
+        }
+      }
+      
+      // Filter by teacher quality (師資) - handle percentage symbols and missing data
+      if (filters.師資.length > 0) {
+        const trainedRateStr = (school.已接受師資培訓人數百分率 || '').replace('%', '').trim();
+        const masterRateStr = (school.碩士博士或以上人數百分率 || '').replace('%', '').trim();
+        
+        // Parse rates, treating invalid/missing data as undefined
+        const trainedRateNum = parseFloat(trainedRateStr);
+        const masterRateNum = parseFloat(masterRateStr);
+        const hasTrainedData = !isNaN(trainedRateNum);
+        const hasMasterData = !isNaN(masterRateNum);
+        
+        // Skip filter if school has no teacher quality data at all
+        if (!hasTrainedData && !hasMasterData) {
+          // School has no teacher data - don't filter it out, just skip this filter
+          // (This allows schools without data to still appear in results)
+        } else {
+          // School has some teacher data - check if it meets criteria
+          let meetsQuality = false;
+          for (const quality of filters.師資) {
+            if (quality === '100%已培訓' && hasTrainedData && trainedRateNum === 100) {
+              meetsQuality = true;
+              break;
+            }
+            if (quality === '90%或以上已培訓' && hasTrainedData && trainedRateNum >= 90) {
+              meetsQuality = true;
+              break;
+            }
+            if (quality === '80%或以上已培訓' && hasTrainedData && trainedRateNum >= 80) {
+              meetsQuality = true;
+              break;
+            }
+            if (quality === '50%或以上碩士' && hasMasterData && masterRateNum >= 50) {
+              meetsQuality = true;
+              break;
+            }
+          }
+          
+          if (!meetsQuality) {
+            return false;
+          }
+        }
+      }
+      
       return true;
     });
-  }, [filters, searchQuery]);
+  }, [filters, searchQuery, language]);
 
   const handleToggleSelect = (school: School) => {
     setSelectedSchools(prev => {

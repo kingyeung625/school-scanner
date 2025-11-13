@@ -54,6 +54,8 @@ export interface FilterState {
   學生性別: string[];
   宗教: string[];
   教學語言: string[];
+  校網: string[];
+  師資: string[];
   searchQuery: string;
 }
 

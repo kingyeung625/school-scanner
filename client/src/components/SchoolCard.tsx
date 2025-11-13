@@ -1,8 +1,9 @@
-import { MapPin, Users, BookOpen, Phone } from 'lucide-react';
+import { MapPin, Users, BookOpen, Phone, GraduationCap, Building2, School as SchoolIcon, Calendar } from 'lucide-react';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { School } from '@shared/school-schema';
 
@@ -30,6 +31,11 @@ export default function SchoolCard({ school, onViewDetails, isSelected, onToggle
             {school.宗教 && school.宗教 !== '不適用' && (
               <Badge variant="outline" className="text-xs">
                 {convertText(school.宗教)}
+              </Badge>
+            )}
+            {school.小一學校網 && school.小一學校網 !== '/' && (
+              <Badge variant="outline" className="text-xs">
+                {t.schoolNetwork} {school.小一學校網}
               </Badge>
             )}
           </div>
@@ -76,6 +82,94 @@ export default function SchoolCard({ school, onViewDetails, isSelected, onToggle
             <span className="text-muted-foreground">
               {school.學校電話}
             </span>
+          </div>
+        )}
+
+        <Separator />
+
+        {/* Additional detailed information */}
+        {school.創校年份 && (
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <span className="text-muted-foreground text-xs">
+              {t.establishedYear}: {school.創校年份}
+            </span>
+          </div>
+        )}
+
+        {school.辦學團體 && (
+          <div className="flex items-start gap-2">
+            <Building2 className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <span className="text-muted-foreground text-xs line-clamp-2 leading-relaxed">
+              {convertText(school.辦學團體)}
+            </span>
+          </div>
+        )}
+
+        {/* Teacher quality badges */}
+        {school.已接受師資培訓人數百分率 && (
+          <div className="flex items-start gap-2">
+            <GraduationCap className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <div className="flex flex-wrap gap-1.5">
+              <Badge variant="outline" className="text-xs">
+                {school.已接受師資培訓人數百分率}{school.已接受師資培訓人數百分率.includes('%') ? '' : '%'} {t.trained}
+              </Badge>
+              {school.學士人數百分率 && (
+                <Badge variant="outline" className="text-xs">
+                  {school.學士人數百分率}{school.學士人數百分率.includes('%') ? '' : '%'} {t.bachelor}
+                </Badge>
+              )}
+              {school.碩士博士或以上人數百分率 && (
+                <Badge variant="outline" className="text-xs">
+                  {school.碩士博士或以上人數百分率}{school.碩士博士或以上人數百分率.includes('%') ? '' : '%'} {t.master}
+                </Badge>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Special features preview */}
+        {school.特別室 && (
+          <div className="flex items-start gap-2">
+            <SchoolIcon className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <span className="text-muted-foreground text-xs line-clamp-2 leading-relaxed">
+              {convertText(school.特別室.split('、').slice(0, 3).join('、'))}
+              {school.特別室.split('、').length > 3 && '...'}
+            </span>
+          </div>
+        )}
+
+        {/* Other facilities if available */}
+        {school.其他學校設施 && school.其他學校設施 !== '-' && (
+          <div className="flex items-start gap-2">
+            <Building2 className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <span className="text-muted-foreground text-xs line-clamp-2 leading-relaxed">
+              {convertText(school.其他學校設施.split('、').slice(0, 2).join('、'))}
+              {school.其他學校設施.split('、').length > 2 && '...'}
+            </span>
+          </div>
+        )}
+
+        {/* Through-train / Direct / Linked schools */}
+        {((school.一條龍中學 && school.一條龍中學 !== '-') || 
+          (school.直屬中學 && school.直屬中學 !== '-') || 
+          (school.聯繫中學 && school.聯繫中學 !== '-')) && (
+          <div className="bg-muted/30 rounded-md p-2 text-xs space-y-1">
+            {school.一條龍中學 && school.一條龍中學 !== '-' && (
+              <div className="text-muted-foreground">
+                {t.throughTrain}: {convertText(school.一條龍中學)}
+              </div>
+            )}
+            {school.直屬中學 && school.直屬中學 !== '-' && (
+              <div className="text-muted-foreground">
+                {t.directSchools}: {convertText(school.直屬中學)}
+              </div>
+            )}
+            {school.聯繫中學 && school.聯繫中學 !== '-' && (
+              <div className="text-muted-foreground">
+                {t.linkedSchools}: {convertText(school.聯繫中學)}
+              </div>
+            )}
           </div>
         )}
       </CardContent>

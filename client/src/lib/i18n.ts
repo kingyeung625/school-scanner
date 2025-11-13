@@ -1,10 +1,16 @@
+import * as OpenCC from 'opencc-js';
+
 export type Language = 'tc' | 'sc';
+
+// Initialize OpenCC converter for Traditional to Simplified Chinese
+// Using Hong Kong Traditional (hk) to Mainland Simplified (cn) conversion
+const converter = OpenCC.Converter({ from: 'hk', to: 'cn' });
 
 export const translations = {
   tc: {
     // Header
     appTitle: '香港小學資料庫',
-    searchPlaceholder: '搜索學校名稱...',
+    searchPlaceholder: '搜索學校名稱或特色設施...',
     
     // Language toggle
     languageToggle: '简',
@@ -18,6 +24,8 @@ export const translations = {
     gender: '學生性別',
     religion: '宗教',
     language: '教學語言',
+    schoolNetwork: '校網',
+    teacherQuality: '師資',
     applyFilters: '套用',
     
     // School list
@@ -74,6 +82,9 @@ export const translations = {
     masterRate: '碩士/博士百分率',
     mission: '辦學宗旨',
     schoolCulture: '校風',
+    trained: '已培訓',
+    bachelor: '學士',
+    master: '碩士',
     
     // Categories
     categories: {
@@ -101,7 +112,7 @@ export const translations = {
   sc: {
     // Header
     appTitle: '香港小学资料库',
-    searchPlaceholder: '搜索学校名称...',
+    searchPlaceholder: '搜索学校名称或特色设施...',
     
     // Language toggle
     languageToggle: '繁',
@@ -115,6 +126,8 @@ export const translations = {
     gender: '学生性别',
     religion: '宗教',
     language: '教学语言',
+    schoolNetwork: '校网',
+    teacherQuality: '师资',
     applyFilters: '套用',
     
     // School list
@@ -171,6 +184,9 @@ export const translations = {
     masterRate: '硕士/博士百分率',
     mission: '办学宗旨',
     schoolCulture: '校风',
+    trained: '已培训',
+    bachelor: '学士',
+    master: '硕士',
     
     // Categories
     categories: {
@@ -197,23 +213,12 @@ export const translations = {
   },
 };
 
-// Simple Traditional Chinese to Simplified Chinese converter
+/**
+ * Converts any Chinese text (Traditional or Simplified) to Simplified Chinese
+ * Uses opencc-js for comprehensive and reliable conversion
+ * Used for bidirectional search matching - allows users to search with either TC or SC
+ */
 export function convertToSimplified(text: string): string {
-  const tcToScMap: Record<string, string> = {
-    '學': '学', '校': '校', '資': '资', '料': '料', '庫': '库',
-    '區': '区', '域': '域', '類': '类', '別': '别', '篩': '筛',
-    '選': '选', '宗': '宗', '教': '教', '語': '语', '言': '言',
-    '電': '电', '話': '话', '傳': '传', '真': '真', '網': '网',
-    '址': '址', '郵': '邮', '創': '创', '辦': '办', '團': '团',
-    '體': '体', '訓': '训', '佔': '占', '師': '师', '費': '费',
-    '課': '课', '室': '室', '數': '数', '禮': '礼', '堂': '堂',
-    '場': '场', '館': '馆', '設': '设', '施': '施', '總': '总',
-    '練': '练', '關': '关', '於': '于', '聯': '联',
-    '繫': '系', '詳': '详', '細': '细', '訊': '讯',
-    '對': '对', '較': '较', '搜': '搜', '索': '索', '比': '比',
-    '應': '应', '該': '该', '會': '会', '無': '无',
-    '適': '适', '用': '用', '絡': '络', '雜': '杂',
-  };
-  
-  return text.split('').map(char => tcToScMap[char] || char).join('');
+  if (!text) return '';
+  return converter(text);
 }

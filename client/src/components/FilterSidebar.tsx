@@ -16,10 +16,12 @@ interface FilterSidebarProps {
 
 const filterOptions = {
   區域: ['香港東區', '九龍城區', '沙田區', '大埔區', '北區', '元朗區', '屯門區', '觀塘區', '深水埗區', '油尖旺區', '黃大仙區', '荃灣區', '葵青區', '離島區', '西貢區', '南區', '灣仔區', '中西區'],
-  學校類別1: ['資助', '官立', '私立'],
+  學校類別1: ['資助', '官立', '私立', '直資'],
   學生性別: ['男女', '男', '女'],
   宗教: ['基督教', '天主教', '佛教', '不適用'],
   教學語言: ['中文', '中文及英文', '中文（包括：普通話）', '中文（包括：普通話）及英文'],
+  校網: ['11', '12', '14', '16', '18', '31', '32', '34', '35', '40', '41', '43', '45', '46', '48', '62', '65', '66', '70', '72', '74', '80', '81', '83', '84', '88', '89', '91', '95', '97', '98'],
+  師資: ['100%已培訓', '90%或以上已培訓', '80%或以上已培訓', '50%或以上碩士'],
 };
 
 export default function FilterSidebar({ filters, onFilterChange, onClose }: FilterSidebarProps) {
@@ -30,6 +32,8 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
     學生性別: true,
     宗教: true,
     教學語言: true,
+    校網: false,
+    師資: false,
   });
 
   const toggleSection = (section: string) => {
@@ -54,6 +58,8 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
       學生性別: [],
       宗教: [],
       教學語言: [],
+      校網: [],
+      師資: [],
       searchQuery: '',
     });
   };

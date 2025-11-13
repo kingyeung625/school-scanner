@@ -10,6 +10,8 @@ export default function FilterSidebarExample() {
     學生性別: [],
     宗教: [],
     教學語言: [],
+    校網: [],
+    師資: [],
     searchQuery: '',
   });
 
