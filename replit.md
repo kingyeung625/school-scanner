@@ -69,6 +69,38 @@ Preferred communication style: Simple, everyday language.
 
 **Data Pattern**: Currently using mock data (`mockSchools.ts`) for frontend prototyping, with infrastructure ready for real database integration.
 
+## Recent Changes
+
+### November 13, 2025
+
+**FilterSidebar Simplification:**
+- Simplified 區域 (region) and 校網 (school net) filter sections to flat layouts
+- Removed categorization/grouping for these two filters (previously grouped by geographic area/number ranges)
+- Removed ScrollArea and Collapsible components for 區域 and 校網 sections
+- Each section now displays as: title + search input + flat checkbox list
+- Other filter categories (資助類型, 學生性別, 宗教, 教學語言, 關聯學校) retain collapsible behavior
+
+**SchoolDetail Basic Info Enhancements:**
+- Added 校監/校管會主席 (supervisor/school management committee chairman) display with title + name formatting
+- Added 校長 (principal) display with title + name formatting
+- Added school schedule fields: 一般上學時間, 一般放學時間
+- Added lunch arrangement card displaying: 午膳開始時間, 午膳結束時間, 午膳安排 (grouped together)
+- Moved 校車服務 and 保姆車 from Facilities tab to Basic Info tab
+
+**Mock Data Completeness:**
+- Updated all 6 mock schools with complete data for new fields:
+  - Supervisor and principal names with titles (稱謂 + 姓名)
+  - School times (start/end times)
+  - Lunch times and arrangements
+  - Class distribution by grade (P1-P6) for both 上學年 and 本學年
+  - Teacher experience percentages (0-4年, 5-9年, 10年以上)
+  - Special education training percentages
+
+**Schema Updates:**
+- Added fields to school schema: 校監_校管會主席姓名, 校監_校管會主席稱謂, 校長姓名, 校長稱謂
+- Added time fields: 一般上學時間, 一般放學時間, 午膳開始時間, 午膳結束時間, 午膳安排
+- All new fields properly translated in i18n system for TC/SC support
+
 ### External Dependencies
 
 **UI Component Framework**: 
