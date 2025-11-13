@@ -83,6 +83,7 @@ Preferred communication style: Simple, everyday language.
 **SchoolDetail Basic Info Enhancements:**
 - Added 校監/校管會主席 (supervisor/school management committee chairman) display with title + name formatting
 - Added 校長 (principal) display with title + name formatting
+- Fixed name/title display order: now shows name before title (e.g., "張華先生" instead of "先生張華") to match Chinese naming conventions
 - Added school schedule fields: 一般上學時間, 一般放學時間
 - Added lunch arrangement card displaying: 午膳開始時間, 午膳結束時間, 午膳安排 (grouped together)
 - Moved 校車服務 and 保姆車 from Facilities tab to Basic Info tab
