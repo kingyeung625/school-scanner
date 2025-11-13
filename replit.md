@@ -80,13 +80,18 @@ Preferred communication style: Simple, everyday language.
 - Each section now displays as: title + search input + flat checkbox list
 - Other filter categories (資助類型, 學生性別, 宗教, 教學語言, 關聯學校) retain collapsible behavior
 
-**SchoolDetail Basic Info Enhancements:**
+**SchoolDetail Basic Info Reorganization:**
 - Added 校監/校管會主席 (supervisor/school management committee chairman) display with title + name formatting
 - Added 校長 (principal) display with title + name formatting
 - Fixed name/title display order: now shows name before title (e.g., "張華先生" instead of "先生張華") to match Chinese naming conventions
-- Added school schedule fields: 一般上學時間, 一般放學時間
-- Added lunch arrangement card displaying: 午膳開始時間, 午膳結束時間, 午膳安排 (grouped together)
-- Moved 校車服務 and 保姆車 from Facilities tab to Basic Info tab
+- Created "上課時間及交通" card cluster grouping: 一般上學時間, 一般放學時間, 校車服務, 保姆車
+- Created "午膳安排" card cluster grouping: 午膳開始時間, 午膳結束時間, 午膳安排
+- Created "辦學理念" card cluster grouping: 校訓, 辦學宗旨, 校風
+- All cards use smart conditional rendering: only display when at least one field is valid (not '-')
+- Implemented intelligent separator logic: separators only appear between valid fields to prevent stray dividers
+
+**Map Tab Enhancement:**
+- Changed Google Maps embed URL to use school name (學校名稱) instead of address (學校地址) for more accurate location results
 
 **Mock Data Completeness:**
 - Updated all 6 mock schools with complete data for new fields:
