@@ -111,14 +111,14 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
 
   // Generate Google Maps embed URL
   const getMapUrl = () => {
-    if (!school.學校地址) return null;
-    const address = encodeURIComponent(school.學校地址);
+    if (!school.學校名稱) return null;
+    const schoolName = encodeURIComponent(school.學校名稱);
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
     
     if (apiKey) {
-      return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${address}`;
+      return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${schoolName}`;
     } else {
-      return `https://www.google.com/maps?q=${address}&output=embed`;
+      return `https://www.google.com/maps?q=${schoolName}&output=embed`;
     }
   };
 
@@ -193,57 +193,96 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <Separator />
                   <InfoRow label={t.sponsoringBody} value={school.辦學團體} />
                   <Separator />
-                  <InfoRow label={t.motto} value={school.校訓} />
-                  <Separator />
                   <InfoRow label={t.schoolArea} value={school.學校佔地面積} />
                   <Separator />
                   <InfoRow label={t.schoolBoard} value={school.法團校董會} />
                   <Separator />
                   <InfoRow label={t.pta} value={school.家長教師會} />
-                  <Separator />
-                  <InfoRow label={t.schoolBus} value={school.校車} />
-                  <Separator />
-                  <InfoRow label={t.nannyBus} value={school.保姆車} />
-                  <Separator />
-                  <InfoRow label={t.generalArrivalTime} value={school.一般上學時間} />
-                  <Separator />
-                  <InfoRow label={t.generalDismissalTime} value={school.一般放學時間} />
                 </CardContent>
               </Card>
 
-              {(school.午膳開始時間 || school.午膳結束時間 || school.午膳安排) && (
+              {((school.一般上學時間 && school.一般上學時間 !== '-') || 
+                (school.一般放學時間 && school.一般放學時間 !== '-') || 
+                (school.校車 && school.校車 !== '-') || 
+                (school.保姆車 && school.保姆車 !== '-')) && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">{language === 'tc' ? '上課時間及交通' : '上课时间及交通'}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-1">
+                    <InfoRow label={t.generalArrivalTime} value={school.一般上學時間} />
+                    {(school.一般上學時間 && school.一般上學時間 !== '-' && 
+                      ((school.一般放學時間 && school.一般放學時間 !== '-') || 
+                       (school.校車 && school.校車 !== '-') || 
+                       (school.保姆車 && school.保姆車 !== '-'))) && <Separator />}
+                    <InfoRow label={t.generalDismissalTime} value={school.一般放學時間} />
+                    {(school.一般放學時間 && school.一般放學時間 !== '-' && 
+                      ((school.校車 && school.校車 !== '-') || 
+                       (school.保姆車 && school.保姆車 !== '-'))) && <Separator />}
+                    <InfoRow label={t.schoolBus} value={school.校車} />
+                    {(school.校車 && school.校車 !== '-' && 
+                      (school.保姆車 && school.保姆車 !== '-')) && <Separator />}
+                    <InfoRow label={t.nannyBus} value={school.保姆車} />
+                  </CardContent>
+                </Card>
+              )}
+
+              {((school.午膳開始時間 && school.午膳開始時間 !== '-') || 
+                (school.午膳結束時間 && school.午膳結束時間 !== '-') || 
+                (school.午膳安排 && school.午膳安排 !== '-')) && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-base">{language === 'tc' ? '午膳安排' : '午膳安排'}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-1">
                     <InfoRow label={t.lunchStartTime} value={school.午膳開始時間} />
-                    <Separator />
+                    {(school.午膳開始時間 && school.午膳開始時間 !== '-' && 
+                      ((school.午膳結束時間 && school.午膳結束時間 !== '-') || 
+                       (school.午膳安排 && school.午膳安排 !== '-'))) && <Separator />}
                     <InfoRow label={t.lunchEndTime} value={school.午膳結束時間} />
-                    <Separator />
+                    {(school.午膳結束時間 && school.午膳結束時間 !== '-' && 
+                      (school.午膳安排 && school.午膳安排 !== '-')) && <Separator />}
                     <InfoRow label={t.lunchArrangement} value={school.午膳安排} />
                   </CardContent>
                 </Card>
               )}
 
-              {school.辦學宗旨 && (
+              {((school.校訓 && school.校訓 !== '-') || (school.校風 && school.校風 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-')) && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-base">{t.mission}</CardTitle>
+                    <CardTitle className="text-base">{language === 'tc' ? '辦學理念' : '办学理念'}</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-sm leading-relaxed">{convertText(school.辦學宗旨)}</p>
-                  </CardContent>
-                </Card>
-              )}
-
-              {school.校風 && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">{t.schoolCulture}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm leading-relaxed">{convertText(school.校風)}</p>
+                  <CardContent className="space-y-1">
+                    {school.校訓 && school.校訓 !== '-' && (
+                      <>
+                        <div className="flex gap-3 py-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground mb-1">{t.motto}</p>
+                            <p className="text-sm leading-relaxed">{convertText(school.校訓)}</p>
+                          </div>
+                        </div>
+                        {((school.校風 && school.校風 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-')) && <Separator />}
+                      </>
+                    )}
+                    {school.辦學宗旨 && school.辦學宗旨 !== '-' && (
+                      <>
+                        <div className="flex gap-3 py-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground mb-1">{t.mission}</p>
+                            <p className="text-sm leading-relaxed">{convertText(school.辦學宗旨)}</p>
+                          </div>
+                        </div>
+                        {(school.校風 && school.校風 !== '-') && <Separator />}
+                      </>
+                    )}
+                    {school.校風 && school.校風 !== '-' && (
+                      <div className="flex gap-3 py-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-muted-foreground mb-1">{t.schoolCulture}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.校風)}</p>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               )}
