@@ -105,7 +105,20 @@ Preferred communication style: Simple, everyday language.
 **Schema Updates:**
 - Added fields to school schema: 校監_校管會主席姓名, 校監_校管會主席稱謂, 校長姓名, 校長稱謂
 - Added time fields: 一般上學時間, 一般放學時間, 午膳開始時間, 午膳結束時間, 午膳安排
+- Added 支援有特殊教育需要學生的設施 field for SEN support facilities
+- Added 非標準項目的核准收費 field for non-standard approved fees
 - All new fields properly translated in i18n system for TC/SC support
+
+**SchoolDetail UI Reorganization (Latest):**
+- Moved 學校類別2 (上課時間) from main info card to "上課時間及交通" card as the first row
+- Merged all facility information into single comprehensive Facilities card:
+  - Numeric counts section (課室/禮堂/操場/圖書館) with filtered array approach for bulletproof separator logic
+  - Badge sections for 特別室, 其他學校設施, 支援有特殊教育需要學生的設施
+  - Smart conditional rendering prevents stray separators even with sparse data
+- Converted Fees tab from InfoRow layout to Table format:
+  - Displays 學費, 家長教師會費, 非標準項目的核准收費 in tabular format
+  - Shows "沒有" fallback for missing or '-' values
+  - Improved data clarity and scannability
 
 ### External Dependencies
 
