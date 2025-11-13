@@ -86,6 +86,21 @@ export const translations = {
     bachelor: '學士',
     master: '碩士',
     
+    // Additional fields
+    lastYearClasses: '上學年總班數',
+    currentYearClasses: '本學年總班數',
+    schoolBus: '校車服務',
+    location: '位置',
+    map: '地圖',
+    teacherStats: '教師資歷統計',
+    schoolInfo: '學校資訊',
+    activities: '學習活動',
+    approvedTeachers: '核准編制教師職位數目',
+    schoolArea: '學校佔地面積',
+    schoolBoard: '法團校董會',
+    pta: '家長教師會',
+    nannyBus: '保姆車',
+    
     // Categories
     categories: {
       資助: '資助',
@@ -187,6 +202,21 @@ export const translations = {
     trained: '已培训',
     bachelor: '学士',
     master: '硕士',
+    
+    // Additional fields
+    lastYearClasses: '上学年总班数',
+    currentYearClasses: '本学年总班数',
+    schoolBus: '校车服务',
+    location: '位置',
+    map: '地图',
+    teacherStats: '教师资历统计',
+    schoolInfo: '学校资讯',
+    activities: '学习活动',
+    approvedTeachers: '核准编制教师职位数目',
+    schoolArea: '学校占地面积',
+    schoolBoard: '法团校董会',
+    pta: '家长教师会',
+    nannyBus: '保姆车',
     
     // Categories
     categories: {

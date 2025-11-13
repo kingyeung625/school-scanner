@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import LanguageToggle from '@/components/LanguageToggle';
 import SearchBar from '@/components/SearchBar';
 import FilterSidebar from '@/components/FilterSidebar';
-import SchoolCard from '@/components/SchoolCard';
+import SchoolListItem from '@/components/SchoolListItem';
 import ComparisonBar from '@/components/ComparisonBar';
 import SchoolDetail from '@/components/SchoolDetail';
 import ComparisonView from '@/components/ComparisonView';
@@ -234,9 +234,9 @@ export default function Home() {
                 <p className="text-muted-foreground">{t.noSchoolsDesc}</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="border rounded-md overflow-hidden">
                 {filteredSchools.map((school) => (
-                  <SchoolCard
+                  <SchoolListItem
                     key={school.id}
                     school={school}
                     onViewDetails={handleViewDetails}

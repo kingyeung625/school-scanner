@@ -70,8 +70,8 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex items-center justify-between p-6 border-b">
-        <h2 className="text-lg font-semibold">{t.filters}</h2>
+      <div className="flex items-center justify-between p-4 border-b">
+        <h2 className="text-base font-semibold">{t.filters}</h2>
         {onClose && (
           <Button
             variant="ghost"
@@ -85,20 +85,20 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="p-6 space-y-4">
+        <div className="p-3 space-y-2">
           {Object.entries(filterOptions).map(([category, options]) => (
             <Collapsible
               key={category}
               open={openSections[category]}
               onOpenChange={() => toggleSection(category)}
             >
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 hover-elevate active-elevate-2 rounded-md" data-testid={`button-toggle-${category}`}>
-                <span className="font-medium text-sm">
+              <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1.5 hover-elevate active-elevate-2 rounded-md" data-testid={`button-toggle-${category}`}>
+                <span className="font-medium text-xs">
                   {(t as any)[category] || convertText(category)}
                 </span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections[category] ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-3 w-3 transition-transform ${openSections[category] ? 'rotate-180' : ''}`} />
               </CollapsibleTrigger>
-              <CollapsibleContent className="pt-3 space-y-3">
+              <CollapsibleContent className="pt-2 space-y-1.5 pl-2">
                 {options.map((option) => {
                   const isChecked = (filters[category as keyof FilterState] as string[])?.includes(option);
                   return (
@@ -113,7 +113,7 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
                       />
                       <Label
                         htmlFor={`${category}-${option}`}
-                        className="text-sm cursor-pointer"
+                        className="text-xs cursor-pointer leading-tight"
                       >
                         {convertText(option)}
                       </Label>
@@ -127,11 +127,12 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
       </ScrollArea>
 
       {hasActiveFilters && (
-        <div className="p-6 border-t">
+        <div className="p-3 border-t">
           <Button
             variant="outline"
             onClick={clearFilters}
             className="w-full"
+            size="sm"
             data-testid="button-clear-filters"
           >
             {t.clearFilters}
