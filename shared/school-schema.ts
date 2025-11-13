@@ -11,8 +11,12 @@ export const schoolSchema = z.object({
   學校電郵: z.string().optional(),
   學校網址: z.string().optional(),
   學校類別1: z.string(), // 資助/私立/官立
-  學校類別2: z.string(), // 全日
+  學校類別2: z.string(), // 全日/上下午
   法團校董會: z.string().optional(),
+  校監_校管會主席姓名: z.string().optional(),
+  校監_校管會主席稱謂: z.string().optional(),
+  校長姓名: z.string().optional(),
+  校長稱謂: z.string().optional(),
   學生性別: z.string(), // 男女/男/女
   辦學團體: z.string().optional(),
   創校年份: z.string().optional(),
@@ -40,7 +44,23 @@ export const schoolSchema = z.object({
   已接受師資培訓人數百分率: z.string().optional(),
   學士人數百分率: z.string().optional(),
   碩士博士或以上人數百分率: z.string().optional(),
+  特殊教育培訓人數百分率: z.string().optional(),
+  "0至4年年資人數百分率": z.string().optional(),
+  "5至9年年資人數百分率": z.string().optional(),
+  "10年年資或以上人數百分率": z.string().optional(),
+  上學年小一班數: z.string().optional(),
+  上學年小二班數: z.string().optional(),
+  上學年小三班數: z.string().optional(),
+  上學年小四班數: z.string().optional(),
+  上學年小五班數: z.string().optional(),
+  上學年小六班數: z.string().optional(),
   上學年總班數: z.string().optional(),
+  本學年小一班數: z.string().optional(),
+  本學年小二班數: z.string().optional(),
+  本學年小三班數: z.string().optional(),
+  本學年小四班數: z.string().optional(),
+  本學年小五班數: z.string().optional(),
+  本學年小六班數: z.string().optional(),
   本學年總班數: z.string().optional(),
   辦學宗旨: z.string().optional(),
   校風: z.string().optional(),
@@ -50,12 +70,12 @@ export type School = z.infer<typeof schoolSchema>;
 
 export interface FilterState {
   區域: string[];
-  學校類別1: string[];
+  校網: string[];
+  資助類型: string[];
   學生性別: string[];
   宗教: string[];
   教學語言: string[];
-  校網: string[];
-  師資: string[];
+  關聯學校: string[];
   searchQuery: string;
 }
 

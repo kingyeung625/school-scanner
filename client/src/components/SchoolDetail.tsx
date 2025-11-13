@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { School } from '@shared/school-schema';
 
@@ -14,8 +15,33 @@ interface SchoolDetailProps {
   onClose: () => void;
 }
 
+// Color palette for charts
+const CHART_COLORS = {
+  trained: '#10b981',    // green
+  bachelor: '#3b82f6',   // blue
+  master: '#8b5cf6',     // purple
+  special: '#f59e0b',    // amber
+  exp0to4: '#06b6d4',    // cyan
+  exp5to9: '#8b5cf6',    // purple
+  exp10plus: '#10b981',  // green
+};
+
 export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
-  const { t, convertText } = useLanguage();
+  const { t, convertText, language } = useLanguage();
+
+  // Helper: Parse percentage string safely
+  const parsePercent = (value?: string) => {
+    if (!value || value === '未有資料' || value === '-') return null;
+    const num = parseFloat(value.replace('%', ''));
+    return isNaN(num) ? null : num;
+  };
+
+  // Helper: Format supervisor/principal name with title
+  const formatName = (title?: string, name?: string): string | undefined => {
+    if (!name || name === '-') return undefined;
+    if (!title || title === '-') return name;
+    return `${title}${name}`;
+  };
 
   const InfoRow = ({ label, value, icon: Icon }: { label: string; value?: string; icon?: any }) => {
     if (!value || value === '-') return null;
@@ -31,35 +57,57 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
     );
   };
 
-  // Prepare teacher qualification chart data
-  const getTeacherChartData = () => {
+  // Prepare teacher qualification chart data (4 bars)
+  const getQualificationChartData = () => {
     const data = [];
     
-    if (school.已接受師資培訓人數百分率 && school.已接受師資培訓人數百分率 !== '未有資料') {
-      const value = parseFloat(school.已接受師資培訓人數百分率.replace('%', ''));
-      if (!isNaN(value)) {
-        data.push({ name: t.trained, value, color: '#10b981' });
-      }
+    const trainedPercent = parsePercent(school.已接受師資培訓人數百分率);
+    if (trainedPercent !== null) {
+      data.push({ name: t.trained, value: trainedPercent, color: CHART_COLORS.trained });
     }
     
-    if (school.學士人數百分率 && school.學士人數百分率 !== '未有資料') {
-      const value = parseFloat(school.學士人數百分率.replace('%', ''));
-      if (!isNaN(value)) {
-        data.push({ name: t.bachelor, value, color: '#3b82f6' });
-      }
+    const bachelorPercent = parsePercent(school.學士人數百分率);
+    if (bachelorPercent !== null) {
+      data.push({ name: t.bachelor, value: bachelorPercent, color: CHART_COLORS.bachelor });
     }
     
-    if (school.碩士博士或以上人數百分率 && school.碩士博士或以上人數百分率 !== '未有資料') {
-      const value = parseFloat(school.碩士博士或以上人數百分率.replace('%', ''));
-      if (!isNaN(value)) {
-        data.push({ name: t.master, value, color: '#8b5cf6' });
-      }
+    const masterPercent = parsePercent(school.碩士博士或以上人數百分率);
+    if (masterPercent !== null) {
+      data.push({ name: t.master, value: masterPercent, color: CHART_COLORS.master });
+    }
+    
+    const specialPercent = parsePercent(school.特殊教育培訓人數百分率);
+    if (specialPercent !== null) {
+      data.push({ name: t.specialEducation, value: specialPercent, color: CHART_COLORS.special });
     }
     
     return data;
   };
 
-  const teacherChartData = getTeacherChartData();
+  // Prepare teacher experience pie chart data (3 segments)
+  const getExperienceChartData = () => {
+    const data = [];
+    
+    const exp0to4 = parsePercent(school["0至4年年資人數百分率"]);
+    if (exp0to4 !== null) {
+      data.push({ name: t.experience0to4, value: exp0to4, color: CHART_COLORS.exp0to4 });
+    }
+    
+    const exp5to9 = parsePercent(school["5至9年年資人數百分率"]);
+    if (exp5to9 !== null) {
+      data.push({ name: t.experience5to9, value: exp5to9, color: CHART_COLORS.exp5to9 });
+    }
+    
+    const exp10plus = parsePercent(school["10年年資或以上人數百分率"]);
+    if (exp10plus !== null) {
+      data.push({ name: t.experience10plus, value: exp10plus, color: CHART_COLORS.exp10plus });
+    }
+    
+    return data;
+  };
+
+  const qualificationChartData = getQualificationChartData();
+  const experienceChartData = getExperienceChartData();
 
   // Generate Google Maps embed URL
   const getMapUrl = () => {
@@ -68,10 +116,8 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
     
     if (apiKey) {
-      // Use Maps Embed API if API key is available
       return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${address}`;
     } else {
-      // Fallback to basic embed without API key
       return `https://www.google.com/maps?q=${address}&output=embed`;
     }
   };
@@ -109,10 +155,11 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
       <ScrollArea className="flex-1">
         <div className="max-w-5xl mx-auto p-4 md:p-6">
           <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 mb-6">
+            <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 mb-6">
               <TabsTrigger value="basic" data-testid="tab-basic" className="text-xs">{t.basicInfo}</TabsTrigger>
               <TabsTrigger value="contact" data-testid="tab-contact" className="text-xs">{t.contact}</TabsTrigger>
               <TabsTrigger value="facilities" data-testid="tab-facilities" className="text-xs">{t.facilities}</TabsTrigger>
+              <TabsTrigger value="classes" data-testid="tab-classes" className="text-xs">{t.classDistribution}</TabsTrigger>
               <TabsTrigger value="teachers" data-testid="tab-teachers" className="text-xs">{t.teachers}</TabsTrigger>
               <TabsTrigger value="fees" data-testid="tab-fees" className="text-xs">{t.fees}</TabsTrigger>
               <TabsTrigger value="map" data-testid="tab-map" className="text-xs">{t.map}</TabsTrigger>
@@ -129,6 +176,12 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <InfoRow label={t.region} value={school.區域} icon={MapPin} />
                   <Separator />
                   <InfoRow label={t.schoolType} value={school.學校類別1} icon={Building2} />
+                  <Separator />
+                  <InfoRow label={t.classTime} value={school.學校類別2} />
+                  <Separator />
+                  <InfoRow label={t.supervisor} value={formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名)} />
+                  <Separator />
+                  <InfoRow label={t.principal} value={formatName(school.校長稱謂, school.校長姓名)} />
                   <Separator />
                   <InfoRow label={t.gender} value={school.學生性別} icon={Users} />
                   <Separator />
@@ -149,12 +202,10 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <InfoRow label={t.schoolBus} value={school.校車} />
                   <Separator />
                   <InfoRow label={t.pta} value={school.家長教師會} />
-                  <Separator />
-                  <InfoRow label={t.language === 'tc' ? '學校類別2' : '学校类别2'} value={school.學校類別2} />
                 </CardContent>
               </Card>
 
-              {school.辦學宗旨&& (
+              {school.辦學宗旨 && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-base">{t.mission}</CardTitle>
@@ -256,13 +307,9 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <Separator />
                   <InfoRow label={t.libraries} value={school.圖書館數目} />
                   <Separator />
-                  <InfoRow label={t.lastYearClasses} value={school.上學年總班數} />
-                  <Separator />
-                  <InfoRow label={t.currentYearClasses} value={school.本學年總班數} />
-                  <Separator />
                   <InfoRow label={t.schoolBus} value={school.校車} />
                   <Separator />
-                  <InfoRow label={t.language === 'tc' ? '保姆車' : '保姆车'} value={school.保姆車} />
+                  <InfoRow label={t.nannyBus} value={school.保姆車} />
                 </CardContent>
               </Card>
 
@@ -301,38 +348,83 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
+            <TabsContent value="classes" className="space-y-3">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">{t.classDistribution}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-xs font-medium">{language === 'tc' ? '學年' : '学年'}</TableHead>
+                          <TableHead className="text-xs text-center font-medium">{t.grade1}</TableHead>
+                          <TableHead className="text-xs text-center font-medium">{t.grade2}</TableHead>
+                          <TableHead className="text-xs text-center font-medium">{t.grade3}</TableHead>
+                          <TableHead className="text-xs text-center font-medium">{t.grade4}</TableHead>
+                          <TableHead className="text-xs text-center font-medium">{t.grade5}</TableHead>
+                          <TableHead className="text-xs text-center font-medium">{t.grade6}</TableHead>
+                          <TableHead className="text-xs text-center font-medium">{t.totalClasses}</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="text-xs font-medium">{t.lastYear}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-last-year-p1">{convertText(school.上學年小一班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-last-year-p2">{convertText(school.上學年小二班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-last-year-p3">{convertText(school.上學年小三班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-last-year-p4">{convertText(school.上學年小四班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-last-year-p5">{convertText(school.上學年小五班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-last-year-p6">{convertText(school.上學年小六班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center font-medium" data-testid="cell-last-year-total">{convertText(school.上學年總班數 || '—')}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="text-xs font-medium">{t.currentYear}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-current-year-p1">{convertText(school.本學年小一班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-current-year-p2">{convertText(school.本學年小二班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-current-year-p3">{convertText(school.本學年小三班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-current-year-p4">{convertText(school.本學年小四班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-current-year-p5">{convertText(school.本學年小五班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center" data-testid="cell-current-year-p6">{convertText(school.本學年小六班數 || '—')}</TableCell>
+                          <TableCell className="text-xs text-center font-medium" data-testid="cell-current-year-total">{convertText(school.本學年總班數 || '—')}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             <TabsContent value="teachers" className="space-y-3">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.teachers}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-1">
-                  <InfoRow label={t.totalTeachers} value={school.教師總人數} icon={GraduationCap} />
-                  <Separator />
-                  <InfoRow label={t.approvedTeachers} value={school.核准編制教師職位數目} />
-                  <Separator />
-                  <InfoRow label={t.trainedRate} value={school.已接受師資培訓人數百分率 && school.已接受師資培訓人數百分率 !== '未有資料' ? `${school.已接受師資培訓人數百分率}${school.已接受師資培訓人數百分率.includes('%') ? '' : '%'}` : undefined} />
-                  <Separator />
-                  <InfoRow label={t.degreeRate} value={school.學士人數百分率 && school.學士人數百分率 !== '未有資料' ? `${school.學士人數百分率}${school.學士人數百分率.includes('%') ? '' : '%'}` : undefined} />
-                  <Separator />
-                  <InfoRow label={t.masterRate} value={school.碩士博士或以上人數百分率 && school.碩士博士或以上人數百分率 !== '未有資料' ? `${school.碩士博士或以上人數百分率}${school.碩士博士或以上人數百分率.includes('%') ? '' : '%'}` : undefined} />
+                <CardContent>
+                  <div className="text-sm py-2">
+                    <span className="text-muted-foreground">{t.approvedTeachers} / {t.totalTeachers}: </span>
+                    <span className="font-medium">
+                      {school.核准編制教師職位數目 || '—'} / {school.教師總人數 || '—'}
+                    </span>
+                  </div>
                 </CardContent>
               </Card>
 
-              {teacherChartData.length > 0 ? (
+              {qualificationChartData.length > 0 ? (
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-base">{t.teacherStats}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={200}>
-                      <BarChart data={teacherChartData}>
+                    <ResponsiveContainer width="100%" height={220}>
+                      <BarChart data={qualificationChartData}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                        <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
+                        <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                        <YAxis domain={[0, 100]} tick={{ fontSize: 11 }} />
                         <Tooltip />
                         <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                          {teacherChartData.map((entry, index) => (
+                          {qualificationChartData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Bar>
@@ -344,8 +436,38 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                 <Card>
                   <CardContent className="py-8 text-center">
                     <p className="text-sm text-muted-foreground">
-                      {t.language === 'tc' ? '暫無教師資歷數據' : '暂无教师资历数据'}
+                      {language === 'tc' ? '暫無教師資歷數據' : '暂无教师资历数据'}
                     </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {experienceChartData.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">{t.experience}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={240}>
+                      <PieChart>
+                        <Pie
+                          data={experienceChartData}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {experienceChartData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
                   </CardContent>
                 </Card>
               )}
@@ -390,7 +512,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                     </div>
                     {!import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
                       <p className="text-xs text-muted-foreground mt-2">
-                        {t.language === 'tc' ? '提示：添加 Google Maps API 金鑰可獲得更好的地圖體驗' : '提示：添加 Google Maps API 金钥可获得更好的地图体验'}
+                        {language === 'tc' ? '提示：添加 Google Maps API 金鑰可獲得更好的地圖體驗' : '提示：添加 Google Maps API 金钥可获得更好的地图体验'}
                       </p>
                     )}
                   </CardContent>
@@ -399,7 +521,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                 <Card>
                   <CardContent className="py-12 text-center">
                     <p className="text-muted-foreground">
-                      {t.language === 'tc' ? '暫無地址資料' : '暂无地址资料'}
+                      {language === 'tc' ? '暫無地址資料' : '暂无地址资料'}
                     </p>
                   </CardContent>
                 </Card>

@@ -18,12 +18,12 @@ export default function Home() {
   const { t, convertText, language } = useLanguage();
   const [filters, setFilters] = useState<FilterState>({
     區域: [],
-    學校類別1: [],
+    校網: [],
+    資助類型: [],
     學生性別: [],
     宗教: [],
     教學語言: [],
-    校網: [],
-    師資: [],
+    關聯學校: [],
     searchQuery: '',
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -60,7 +60,7 @@ export default function Home() {
         return false;
       }
       
-      if (filters.學校類別1.length > 0 && !filters.學校類別1.includes(school.學校類別1)) {
+      if (filters.資助類型.length > 0 && !filters.資助類型.includes(school.學校類別1)) {
         return false;
       }
       
@@ -88,46 +88,27 @@ export default function Home() {
         }
       }
       
-      // Filter by teacher quality (師資) - handle percentage symbols and missing data
-      if (filters.師資.length > 0) {
-        const trainedRateStr = (school.已接受師資培訓人數百分率 || '').replace('%', '').trim();
-        const masterRateStr = (school.碩士博士或以上人數百分率 || '').replace('%', '').trim();
+      // Filter by linked schools (關聯學校) - matches 一條龍/直屬/聯繫
+      if (filters.關聯學校.length > 0) {
+        let hasLinkedSchool = false;
         
-        // Parse rates, treating invalid/missing data as undefined
-        const trainedRateNum = parseFloat(trainedRateStr);
-        const masterRateNum = parseFloat(masterRateStr);
-        const hasTrainedData = !isNaN(trainedRateNum);
-        const hasMasterData = !isNaN(masterRateNum);
+        for (const linkedType of filters.關聯學校) {
+          if (linkedType === '一條龍' && school.一條龍中學 && school.一條龍中學 !== '-') {
+            hasLinkedSchool = true;
+            break;
+          }
+          if (linkedType === '直屬' && school.直屬中學 && school.直屬中學 !== '-') {
+            hasLinkedSchool = true;
+            break;
+          }
+          if (linkedType === '聯繫' && school.聯繫中學 && school.聯繫中學 !== '-') {
+            hasLinkedSchool = true;
+            break;
+          }
+        }
         
-        // Skip filter if school has no teacher quality data at all
-        if (!hasTrainedData && !hasMasterData) {
-          // School has no teacher data - don't filter it out, just skip this filter
-          // (This allows schools without data to still appear in results)
-        } else {
-          // School has some teacher data - check if it meets criteria
-          let meetsQuality = false;
-          for (const quality of filters.師資) {
-            if (quality === '100%已培訓' && hasTrainedData && trainedRateNum === 100) {
-              meetsQuality = true;
-              break;
-            }
-            if (quality === '90%或以上已培訓' && hasTrainedData && trainedRateNum >= 90) {
-              meetsQuality = true;
-              break;
-            }
-            if (quality === '80%或以上已培訓' && hasTrainedData && trainedRateNum >= 80) {
-              meetsQuality = true;
-              break;
-            }
-            if (quality === '50%或以上碩士' && hasMasterData && masterRateNum >= 50) {
-              meetsQuality = true;
-              break;
-            }
-          }
-          
-          if (!meetsQuality) {
-            return false;
-          }
+        if (!hasLinkedSchool) {
+          return false;
         }
       }
       
