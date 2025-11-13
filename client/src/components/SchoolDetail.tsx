@@ -40,7 +40,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
   const formatName = (title?: string, name?: string): string | undefined => {
     if (!name || name === '-') return undefined;
     if (!title || title === '-') return name;
-    return `${title}${name}`;
+    return `${name}${title}`;
   };
 
   const InfoRow = ({ label, value, icon: Icon }: { label: string; value?: string; icon?: any }) => {
