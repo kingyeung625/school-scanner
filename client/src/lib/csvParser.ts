@@ -1,5 +1,6 @@
-import { School } from '@shared/school-schema';
+import { School, SchoolData } from '@shared/school-schema';
 import Papa from 'papaparse';
+import { loadArticles } from './articlesParser';
 
 // Load and parse schools from CSV file using Papaparse
 let cachedSchools: School[] | null = null;
@@ -66,6 +67,22 @@ export async function loadSchools(): Promise<School[]> {
     });
     
     console.log(`Successfully loaded ${cachedSchools.length} schools from CSV`);
+    
+    // Load and merge articles data
+    const articlesMap = await loadArticles();
+    cachedSchools = cachedSchools.map(school => {
+      const articles = articlesMap[school.學校名稱];
+      if (articles && articles.length > 0) {
+        return {
+          ...school,
+          articles,
+        };
+      }
+      return school;
+    });
+    
+    const schoolsWithArticles = cachedSchools.filter(s => s.articles && s.articles.length > 0).length;
+    console.log(`Merged articles: ${schoolsWithArticles} schools have news articles`);
     
     // Note: CSV has some malformed rows, so actual count may be less than 521
     // This is expected and we load all valid schools we can parse

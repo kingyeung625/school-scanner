@@ -1,4 +1,4 @@
-import { MapPin, Users, ChevronRight } from 'lucide-react';
+import { MapPin, Users, ChevronRight, Newspaper } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -66,6 +66,42 @@ export default function SchoolListItem({ school, onViewDetails, isSelected, onTo
             </Badge>
           )}
         </div>
+        
+        {/* Display first article if available */}
+        {school.articles && school.articles.length > 0 && (
+          <div className="mt-2 pt-2 border-t">
+            <a
+              href={school.articles[0].url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex gap-2 hover-elevate rounded-md p-1.5 -m-1.5"
+              data-testid={`link-article-${school.id}`}
+            >
+              {school.articles[0].ogImage ? (
+                <img
+                  src={school.articles[0].ogImage}
+                  alt={school.articles[0].title}
+                  className="w-16 h-12 object-cover rounded flex-shrink-0"
+                  data-testid={`img-article-og-${school.id}`}
+                />
+              ) : (
+                <div className="w-16 h-12 bg-muted rounded flex items-center justify-center flex-shrink-0">
+                  <Newspaper className="h-6 w-6 text-muted-foreground" />
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1 text-xs text-primary">
+                  <Newspaper className="h-3 w-3" />
+                  <span className="font-medium">新聞報導</span>
+                </div>
+                <p className="text-xs text-foreground line-clamp-2 mt-0.5 leading-tight">
+                  {convertText(school.articles[0].title)}
+                </p>
+              </div>
+            </a>
+          </div>
+        )}
       </div>
       
       <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />

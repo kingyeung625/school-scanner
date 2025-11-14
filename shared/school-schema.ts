@@ -87,7 +87,18 @@ export const schoolSchema = z.object({
   分班安排: z.string().optional(),
 });
 
-export type School = z.infer<typeof schoolSchema>;
+export interface Article {
+  title: string;
+  url: string;
+  ogImage?: string;
+  ogDescription?: string;
+}
+
+export type SchoolData = z.infer<typeof schoolSchema>;
+
+export type School = SchoolData & {
+  articles?: Article[];
+};
 
 export interface FilterState {
   區域: string[];
