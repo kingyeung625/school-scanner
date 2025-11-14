@@ -48,23 +48,8 @@ export async function loadArticles(): Promise<ArticlesMap> {
     
     console.log(`Loaded articles for ${Object.keys(articlesMap).length} schools`);
     
-    // Fetch OG metadata for all articles (in parallel for performance)
-    const allArticles = Object.values(articlesMap).flat();
-    console.log(`Fetching OG metadata for ${allArticles.length} articles...`);
-    
-    await Promise.all(
-      allArticles.map(async (article) => {
-        try {
-          const ogData = await fetchOGMetadata(article.url);
-          article.ogImage = ogData.ogImage;
-          article.ogDescription = ogData.ogDescription;
-        } catch (error) {
-          console.warn(`Failed to fetch OG for ${article.url}:`, error);
-        }
-      })
-    );
-    
-    console.log(`Completed fetching OG metadata for articles`);
+    // DON'T fetch OG metadata here to avoid blocking school list rendering
+    // OG metadata will be lazy-loaded in the UI components as needed
     
     cachedArticles = articlesMap;
     return cachedArticles;
