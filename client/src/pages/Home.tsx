@@ -124,7 +124,7 @@ export default function Home() {
       
       return true;
     });
-  }, [filters, searchQuery, language]);
+  }, [allSchools, filters, searchQuery, language]);
 
   const handleToggleSelect = (school: School) => {
     setSelectedSchools(prev => {
