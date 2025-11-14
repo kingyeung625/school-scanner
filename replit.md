@@ -73,6 +73,25 @@ Preferred communication style: Simple, everyday language.
 
 ### November 14, 2025
 
+**News Articles Integration:**
+- Implemented comprehensive news article display for schools with media coverage
+- Loaded 44 news articles from CSV database mapping to 29 schools
+- Created secure OG metadata fetching API with SSRF protection:
+  - Domain whitelist enforcement (hk01.com, www.hk01.com only)
+  - 5-second timeout to prevent hanging requests
+  - Returns 403 Forbidden for invalid domains, 400 for malformed URLs
+- Implemented lazy-loading architecture for optimal performance:
+  - Schools load immediately without blocking (~1-2 seconds)
+  - Articles load instantly with schools (no blocking)
+  - OG images fetch progressively in background via useEffect per card
+- Large, responsive article previews in SchoolListItem:
+  - Desktop: Full-width 16:9 aspect ratio images, min 200px / max 675px height
+  - Mobile: Full-width responsive images filling card width
+  - Article title displayed below OG image with larger text
+  - Fallback newspaper icon placeholder when OG image unavailable
+- Click-through opens articles in new tab with proper security attributes
+- All 508 schools load instantly; only schools with articles show article section
+
 **Homework/Assessment Arrangements Card:**
 - Created new "課業安排" (Homework Arrangement) card in SchoolDetail Basic Info tab
 - Added 14 new fields to school schema for comprehensive homework/assessment data:
