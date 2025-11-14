@@ -71,6 +71,33 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### November 14, 2025
+
+**Homework/Assessment Arrangements Card:**
+- Created new "課業安排" (Homework Arrangement) card in SchoolDetail Basic Info tab
+- Added 14 new fields to school schema for comprehensive homework/assessment data:
+  - Text fields: 班級教學模式 (teaching mode), 班級結構備註 (class structure remarks), 分班安排 (class arrangement)
+  - Numeric fields: 全年全科測驗次數_一年級/二至六年級 (test counts), 全年全科考試次數_一年級/二至六年級 (exam counts)
+  - Policy fields (yes/no): 小一上學期以多元化的進展性評估代替測驗及考試, plus 6 additional policy flags covering homework policy transparency, diverse assessment, test scheduling, and homework time arrangements
+- Implemented 3-subsection card layout for optimal readability:
+  - Class Structure subsection: stacked text blocks for teaching mode, structure remarks, and arrangement
+  - Testing Schedule subsection: 2-row table (小一, 小二至六) with test/exam count columns
+  - Policy Highlights subsection: checkmark list displaying only "是" (yes) policies with green Check icons for visual clarity
+- Smart conditional rendering ensures:
+  - Card displays when ANY field has meaningful data (including "否" values)
+  - Each subsection only renders when it has data to display
+  - Separators only appear between populated subsections
+  - Policy section displays checkmarks for positive policies only (避免 UI clutter)
+- Added comprehensive TC/SC translations for all new fields and labels
+- Updated mock data with realistic sample values for UI testing
+- Positioned card after 辦學理念 card as requested
+
+**Design Rationale:**
+- Top-level guard treats both "是" and "否" as meaningful data (card shows if policies exist)
+- Policy display only highlights "是" values to emphasize what schools DO offer
+- Table format for testing schedule improves scannability vs. text format
+- All elements use convertText for bilingual support and data-testid for testing
+
 ### November 13, 2025
 
 **FilterSidebar Simplification:**
