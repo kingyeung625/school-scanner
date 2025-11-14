@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Menu, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -11,11 +11,13 @@ import SchoolDetail from '@/components/SchoolDetail';
 import ComparisonView from '@/components/ComparisonView';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { convertToSimplified } from '@/lib/i18n';
-import { mockSchools } from '@/lib/mockSchools';
+import { loadSchools } from '@/lib/csvParser';
 import type { FilterState, School } from '@shared/school-schema';
 
 export default function Home() {
   const { t, convertText, language } = useLanguage();
+  const [allSchools, setAllSchools] = useState<School[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState<FilterState>({
     區域: [],
     校網: [],
@@ -32,9 +34,17 @@ export default function Home() {
   const [showComparison, setShowComparison] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  // TODO: remove mock functionality - replace with real data from API
+  // Load schools from CSV on mount
+  useEffect(() => {
+    loadSchools().then(schools => {
+      setAllSchools(schools);
+      setIsLoading(false);
+    });
+  }, []);
+
+  // Filter schools based on search and filter criteria
   const filteredSchools = useMemo(() => {
-    return mockSchools.filter((school) => {
+    return allSchools.filter((school) => {
       // Search in school name AND special features (bidirectional TC/SC matching)
       if (searchQuery) {
         // Normalize to Simplified Chinese for language-agnostic comparison
@@ -209,7 +219,12 @@ export default function Home() {
               </p>
             </div>
 
-            {filteredSchools.length === 0 ? (
+            {isLoading ? (
+              <div className="text-center py-12">
+                <p className="text-xl font-medium mb-2">{language === 'tc' ? '載入中...' : '载入中...'}</p>
+                <p className="text-muted-foreground">{language === 'tc' ? '正在載入學校資料' : '正在载入学校资料'}</p>
+              </div>
+            ) : filteredSchools.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-xl font-medium mb-2">{t.noSchools}</p>
                 <p className="text-muted-foreground">{t.noSchoolsDesc}</p>
