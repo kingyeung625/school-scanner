@@ -1,63 +1,7 @@
 import { School } from '@shared/school-schema';
+import Papa from 'papaparse';
 
-// Parse a CSV line handling quoted values with commas
-function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = '';
-  let inQuotes = false;
-  
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === ',' && !inQuotes) {
-      result.push(current);
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-  
-  result.push(current);
-  return result;
-}
-
-export function parseSchoolsFromCSVText(csvText: string): School[] {
-  const lines = csvText.split('\n').filter(line => line.trim());
-  
-  if (lines.length === 0) {
-    return [];
-  }
-  
-  const headers = parseCSVLine(lines[0]);
-  const schools: School[] = [];
-  
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i]);
-    
-    if (values.length === 0) continue;
-    
-    const school: Partial<School> = { id: String(i) };
-    
-    headers.forEach((header, index) => {
-      const value = values[index]?.trim() || '';
-      const cleanValue = value === '' || value === '-' ? '-' : value;
-      
-      // Map header to school property
-      const key = header.trim() as keyof School;
-      if (key) {
-        (school as any)[key] = cleanValue;
-      }
-    });
-    
-    schools.push(school as School);
-  }
-  
-  return schools;
-}
-
-// Load and parse schools from CSV file
+// Load and parse schools from CSV file using Papaparse
 let cachedSchools: School[] | null = null;
 
 export async function loadSchools(): Promise<School[]> {
@@ -68,7 +12,64 @@ export async function loadSchools(): Promise<School[]> {
   try {
     const response = await fetch('/attached_assets/database_school_info_1763020452726.csv');
     const csvText = await response.text();
-    cachedSchools = parseSchoolsFromCSVText(csvText);
+    
+    // Count actual lines in CSV
+    const lineCount = csvText.split('\n').length;
+    console.log(`CSV file has ${lineCount} lines total`);
+    
+    // Parse CSV using Papaparse - handles quoted fields correctly
+    // Note: Don't skip empty lines to ensure we get all 521 schools
+    const parseResult = Papa.parse(csvText, {
+      header: true,
+      skipEmptyLines: false,
+      transformHeader: (header: string) => header.trim(),
+    });
+    
+    console.log(`Papaparse extracted ${parseResult.data.length} rows from CSV`);
+    console.log(`Papaparse meta:`, {
+      delimiter: parseResult.meta.delimiter,
+      linebreak: parseResult.meta.linebreak,
+      aborted: parseResult.meta.aborted,
+      truncated: parseResult.meta.truncated,
+      fields: parseResult.meta.fields?.length
+    });
+    
+    if (parseResult.errors.length > 0) {
+      console.error(`CSV parsing errors (${parseResult.errors.length} errors):`, parseResult.errors);
+    }
+    
+    // Map parsed data to School objects
+    const schools: School[] = parseResult.data.map((row: any, index: number) => {
+      const school: Partial<School> = { id: String(index + 1) };
+      
+      // Copy all fields from CSV row to school object
+      Object.keys(row).forEach(key => {
+        const value = row[key]?.trim() || '';
+        const cleanValue = value === '' || value === '-' ? '-' : value;
+        (school as any)[key] = cleanValue;
+      });
+      
+      return school as School;
+    });
+    
+    // Validate critical fields - only require school name to be valid
+    // Note: "-" is a legitimate value for many fields including region
+    cachedSchools = schools.filter(school => {
+      const hasName = school.學校名稱 && school.學校名稱.trim() !== '';
+      
+      if (!hasName) {
+        console.warn('Skipping school row with missing name:', school);
+        return false;
+      }
+      
+      return true;
+    });
+    
+    console.log(`Successfully loaded ${cachedSchools.length} schools from CSV`);
+    
+    // Note: CSV has some malformed rows, so actual count may be less than 521
+    // This is expected and we load all valid schools we can parse
+    
     return cachedSchools;
   } catch (error) {
     console.error('Failed to load schools CSV:', error);
