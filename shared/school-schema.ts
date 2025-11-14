@@ -71,6 +71,20 @@ export const schoolSchema = z.object({
   本學年總班數: z.string().optional(),
   辦學宗旨: z.string().optional(),
   校風: z.string().optional(),
+  班級教學模式: z.string().optional(),
+  班級結構備註: z.string().optional(),
+  全年全科測驗次數_一年級: z.string().optional(),
+  全年全科考試次數_一年級: z.string().optional(),
+  小一上學期以多元化的進展性評估代替測驗及考試: z.string().optional(),
+  全年全科測驗次數_二至六年級: z.string().optional(),
+  全年全科考試次數_二至六年級: z.string().optional(),
+  制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見: z.string().optional(),
+  將校本評估政策上載至學校網頁_讓公眾及持份者知悉: z.string().optional(),
+  將校本課業政策上載至學校網頁_讓公眾及持份者知悉: z.string().optional(),
+  多元學習評估: z.string().optional(),
+  避免緊接在長假期後安排測考_讓學生在假期有充分的休息: z.string().optional(),
+  按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課: z.string().optional(),
+  分班安排: z.string().optional(),
 });
 
 export type School = z.infer<typeof schoolSchema>;

@@ -130,6 +130,25 @@ export const translations = {
     lunchEndTime: '午膳結束時間',
     lunchArrangement: '午膳安排',
     
+    // Homework & Assessment
+    homeworkArrangement: '課業安排',
+    classTeachingMode: '班級教學模式',
+    classStructureRemarks: '班級結構備註',
+    testCountYear1: '全年全科測驗次數（一年級）',
+    examCountYear1: '全年全科考試次數（一年級）',
+    p1AlternativeAssessment: '小一上學期以多元化的進展性評估代替測驗及考試',
+    testCountYear2to6: '全年全科測驗次數（二至六年級）',
+    examCountYear2to6: '全年全科考試次數（二至六年級）',
+    homeworkPolicyParents: '制定適切的校本課業政策，讓家長了解相關安排，並定期蒐集教師、學生和家長的意見',
+    assessmentPolicyOnline: '將校本評估政策上載至學校網頁，讓公眾及持份者知悉',
+    homeworkPolicyOnline: '將校本課業政策上載至學校網頁，讓公眾及持份者知悉',
+    diverseLearningAssessment: '多元學習評估',
+    avoidTestAfterHoliday: '避免緊接在長假期後安排測考，讓學生在假期有充分的休息',
+    afternoonHomeworkTime: '按校情靈活編排時間表，盡量在下午安排導修時段，讓學生能在教師指導下完成部分家課',
+    classArrangement: '分班安排',
+    yes: '是',
+    no: '否',
+    
     // Categories
     categories: {
       資助: '資助',
@@ -275,6 +294,25 @@ export const translations = {
     lunchStartTime: '午膳开始时间',
     lunchEndTime: '午膳结束时间',
     lunchArrangement: '午膳安排',
+    
+    // Homework & Assessment
+    homeworkArrangement: '课业安排',
+    classTeachingMode: '班级教学模式',
+    classStructureRemarks: '班级结构备注',
+    testCountYear1: '全年全科测验次数（一年级）',
+    examCountYear1: '全年全科考试次数（一年级）',
+    p1AlternativeAssessment: '小一上学期以多元化的进展性评估代替测验及考试',
+    testCountYear2to6: '全年全科测验次数（二至六年级）',
+    examCountYear2to6: '全年全科考试次数（二至六年级）',
+    homeworkPolicyParents: '制定适切的校本课业政策，让家长了解相关安排，并定期搜集教师、学生和家长的意见',
+    assessmentPolicyOnline: '将校本评估政策上载至学校网页，让公众及持份者知悉',
+    homeworkPolicyOnline: '将校本课业政策上载至学校网页，让公众及持份者知悉',
+    diverseLearningAssessment: '多元学习评估',
+    avoidTestAfterHoliday: '避免紧接在长假期后安排测考，让学生在假期有充分的休息',
+    afternoonHomeworkTime: '按校情灵活编排时间表，尽量在下午安排导修时段，让学生能在教师指导下完成部分家课',
+    classArrangement: '分班安排',
+    yes: '是',
+    no: '否',
     
     // Categories
     categories: {
