@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { School } from '@shared/school-schema';
+import ArticleCarousel from './ArticleCarousel';
 
 interface SchoolDetailProps {
   school: School;
@@ -154,6 +155,11 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
 
       <ScrollArea className="flex-1">
         <div className="max-w-5xl mx-auto p-4 md:p-6">
+          {/* Article Carousel - Prominent floating display */}
+          {school.articles && school.articles.length > 0 && (
+            <ArticleCarousel articles={school.articles} />
+          )}
+          
           <Tabs defaultValue="basic" className="w-full">
             <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 mb-6">
               <TabsTrigger value="basic" data-testid="tab-basic" className="text-xs">{t.basicInfo}</TabsTrigger>
