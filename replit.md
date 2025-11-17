@@ -73,23 +73,29 @@ Preferred communication style: Simple, everyday language.
 
 ### November 17, 2025
 
-**Article Carousel Implementation (Option A):**
+**Article Carousel - Responsive & Autoplay Implementation:**
 - Redesigned article display: moved from list view to detail page for better discoverability and focus
-- Created ArticleCarousel component using embla-carousel-react for smooth, native-feeling navigation
+- Created ArticleCarousel component using embla-carousel-react with autoplay functionality
 - List view changes:
   - Removed large OG image display from SchoolListItem
   - Added small article count badge (e.g., "新聞 (4)") with newspaper icon
   - Badge only displays when school has articles (29 schools total)
   - Improved list view performance and information density
 - Detail page carousel features:
-  - Prominent floating card at top of SchoolDetail, above tabs
-  - Large responsive OG images (16:9 aspect, min 200px, max 675px height)
-  - Article title displayed below image
+  - **Full-width responsive design**: Images fill entire viewport width at all screen sizes
+  - Header and title sections have max-w-5xl constraint for readability
+  - **Autoplay**: Automatically advances slides every 3 seconds with continuous looping
+  - Pause on hover: Autoplay pauses when mouse hovers over carousel
   - Navigation with prev/next arrow buttons for multiple articles
   - Article count indicator (e.g., "1 / 4")
   - Swipe gesture support for mobile
   - Single-article graceful handling (no navigation buttons/counter when only 1 article)
   - Lazy-loading: OG images fetch for current and adjacent slides
+- Technical implementation:
+  - embla-carousel-autoplay plugin with useRef for stability
+  - Loop enabled (required for autoplay to function)
+  - Explicit autoplay.play() call after Embla initialization
+  - Configuration: delay 3000ms, stopOnInteraction false, stopOnMouseEnter true
 - Secure OG metadata API with SSRF protection:
   - Domain whitelist enforcement (hk01.com, www.hk01.com only)
   - 5-second timeout to prevent hanging requests
