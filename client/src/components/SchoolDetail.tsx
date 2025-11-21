@@ -167,7 +167,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               <TabsTrigger value="basic" data-testid="tab-basic" className="text-xs">{t.basicInfo}</TabsTrigger>
               <TabsTrigger value="philosophy" data-testid="tab-philosophy" className="text-xs">{t.schoolPhilosophy}</TabsTrigger>
               <TabsTrigger value="homework" data-testid="tab-homework" className="text-xs">{t.homeworkArrangement}</TabsTrigger>
-              <TabsTrigger value="teaching" data-testid="tab-teaching" className="text-xs">{t.teachingFeatures}</TabsTrigger>
+              <TabsTrigger value="teaching-features" data-testid="tab-teaching" className="text-xs">{t.teachingFeatures}</TabsTrigger>
               <TabsTrigger value="facilities" data-testid="tab-facilities" className="text-xs">{t.facilities}</TabsTrigger>
               <TabsTrigger value="classes" data-testid="tab-classes" className="text-xs">{t.classDistribution}</TabsTrigger>
               <TabsTrigger value="teachers" data-testid="tab-teachers" className="text-xs">{t.teachers}</TabsTrigger>
