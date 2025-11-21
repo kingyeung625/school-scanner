@@ -2,7 +2,6 @@ import { X, MapPin, Phone, Mail, Globe, Users, BookOpen, Building2, DollarSign, 
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -137,44 +136,34 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
   const mapUrl = getMapUrl();
 
   return (
-    <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent 
-        className="max-w-6xl h-[90vh] p-0 gap-0"
-        aria-labelledby="school-detail-title"
-        aria-describedby="school-detail-description"
-      >
-        <div className="flex items-center justify-between p-4 md:p-6 border-b shrink-0">
-          <div className="flex-1 min-w-0 pr-4">
-            <h1 
-              id="school-detail-title"
-              className="text-xl md:text-2xl font-semibold leading-relaxed" 
-              data-testid="text-school-detail-name"
-            >
-              {convertText(school.學校名稱)}
-            </h1>
-            <div id="school-detail-description" className="flex flex-wrap gap-2 mt-2">
-              <Badge variant="secondary">{convertText(school.學校類別1)}</Badge>
-              <Badge variant="outline">{convertText(school.區域)}</Badge>
-              {school.宗教 && school.宗教 !== '不適用' && (
-                <Badge variant="outline">{convertText(school.宗教)}</Badge>
-              )}
-              {school.小一學校網 && school.小一學校網 !== '/' && (
-                <Badge variant="outline">{t.schoolNetwork} {school.小一學校網}</Badge>
-              )}
-            </div>
+    <div className="fixed inset-0 bg-background z-50 flex flex-col">
+      <div className="flex items-center justify-between p-4 md:p-6 border-b">
+        <div className="flex-1 min-w-0 pr-4">
+          <h1 className="text-xl md:text-2xl font-semibold leading-relaxed" data-testid="text-school-detail-name">
+            {convertText(school.學校名稱)}
+          </h1>
+          <div className="flex flex-wrap gap-2 mt-2">
+            <Badge variant="secondary">{convertText(school.學校類別1)}</Badge>
+            <Badge variant="outline">{convertText(school.區域)}</Badge>
+            {school.宗教 && school.宗教 !== '不適用' && (
+              <Badge variant="outline">{convertText(school.宗教)}</Badge>
+            )}
+            {school.小一學校網 && school.小一學校網 !== '/' && (
+              <Badge variant="outline">{t.schoolNetwork} {school.小一學校網}</Badge>
+            )}
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            aria-label={t.close || "Close"}
-            data-testid="button-close-detail"
-          >
-            <X className="h-5 w-5" />
-          </Button>
         </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          data-testid="button-close-detail"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+      </div>
 
-        <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1">
         {/* Article Carousel - Full-width responsive display */}
         {school.articles && school.articles.length > 0 && (
           <div className="w-full">
@@ -184,7 +173,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
         
         <div className="max-w-5xl mx-auto p-4 md:p-6">
           <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="sticky top-0 z-50 w-full mb-6 bg-background shadow-sm overflow-x-auto">
+            <TabsList className="sticky top-0 z-50 grid w-full grid-cols-3 md:grid-cols-9 mb-6 bg-background shadow-sm">
               <TabsTrigger value="basic" data-testid="tab-basic" className="text-xs">{t.basicInfo}</TabsTrigger>
               <TabsTrigger value="philosophy" data-testid="tab-philosophy" className="text-xs">{t.schoolPhilosophy}</TabsTrigger>
               <TabsTrigger value="homework" data-testid="tab-homework" className="text-xs">{t.homeworkArrangement}</TabsTrigger>
@@ -196,7 +185,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               <TabsTrigger value="contact" data-testid="tab-contact" className="text-xs">{t.contactAndLocation}</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="basic" className="space-y-3 pt-6">
+            <TabsContent value="basic" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.schoolInfo}</CardTitle>
@@ -367,7 +356,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="philosophy" className="space-y-3 pt-6">
+            <TabsContent value="philosophy" className="space-y-3 pt-4">
               {((school.校訓 && school.校訓 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-') || (school.學校發展計劃 && school.學校發展計劃 !== '-')) && (
                 <Card data-testid="card-philosophy">
                   <CardHeader>
@@ -420,7 +409,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="homework" className="space-y-3 pt-6">
+            <TabsContent value="homework" className="space-y-3 pt-4">
               {(() => {
                 const hasHomeworkData = 
                   (school.班級教學模式 && school.班級教學模式 !== '-') ||
@@ -599,7 +588,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               })()}
             </TabsContent>
 
-            <TabsContent value="teaching-features" className="space-y-3 pt-6">
+            <TabsContent value="teaching-features" className="space-y-3 pt-4">
               {/* School Life & Activities Section */}
               {(() => {
                 const hasSchoolLifeData = 
@@ -719,7 +708,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               })()}
             </TabsContent>
 
-            <TabsContent value="contact" className="space-y-3 pt-6">
+            <TabsContent value="contact" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.contact}</CardTitle>
@@ -792,7 +781,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="facilities" className="space-y-3 pt-6">
+            <TabsContent value="facilities" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.facilities}</CardTitle>
@@ -869,14 +858,14 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               </Card>
             </TabsContent>
 
-            <TabsContent value="classes" className="space-y-3 pt-6">
+            <TabsContent value="classes" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.classDistribution}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-0">
-                  <div className="overflow-x-auto px-6 py-4">
-                    <Table className="min-w-full">
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead className="text-xs font-medium">{language === 'tc' ? '學年' : '学年'}</TableHead>
@@ -917,7 +906,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               </Card>
             </TabsContent>
 
-            <TabsContent value="teachers" className="space-y-3 pt-6">
+            <TabsContent value="teachers" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.teachers}</CardTitle>
@@ -994,7 +983,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="fees" className="space-y-3 pt-6">
+            <TabsContent value="fees" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.fees}</CardTitle>
@@ -1051,8 +1040,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
             </TabsContent>
           </Tabs>
         </div>
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
+      </ScrollArea>
+    </div>
   );
 }
