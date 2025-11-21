@@ -163,14 +163,16 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
         
         <div className="max-w-5xl mx-auto p-4 md:p-6">
           <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 mb-6">
+            <TabsList className="grid w-full grid-cols-3 md:grid-cols-9 mb-6">
               <TabsTrigger value="basic" data-testid="tab-basic" className="text-xs">{t.basicInfo}</TabsTrigger>
-              <TabsTrigger value="contact" data-testid="tab-contact" className="text-xs">{t.contact}</TabsTrigger>
+              <TabsTrigger value="philosophy" data-testid="tab-philosophy" className="text-xs">{t.schoolPhilosophy}</TabsTrigger>
+              <TabsTrigger value="homework" data-testid="tab-homework" className="text-xs">{t.homeworkArrangement}</TabsTrigger>
+              <TabsTrigger value="teaching" data-testid="tab-teaching" className="text-xs">{t.teachingFeatures}</TabsTrigger>
               <TabsTrigger value="facilities" data-testid="tab-facilities" className="text-xs">{t.facilities}</TabsTrigger>
               <TabsTrigger value="classes" data-testid="tab-classes" className="text-xs">{t.classDistribution}</TabsTrigger>
               <TabsTrigger value="teachers" data-testid="tab-teachers" className="text-xs">{t.teachers}</TabsTrigger>
               <TabsTrigger value="fees" data-testid="tab-fees" className="text-xs">{t.fees}</TabsTrigger>
-              <TabsTrigger value="map" data-testid="tab-map" className="text-xs">{t.map}</TabsTrigger>
+              <TabsTrigger value="contact" data-testid="tab-contact" className="text-xs">{t.contactAndLocation}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="basic" className="space-y-3">
@@ -185,10 +187,6 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <Separator />
                   <InfoRow label={t.schoolType} value={school.學校類別1} icon={Building2} />
                   <Separator />
-                  <InfoRow label={t.supervisor} value={formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名)} />
-                  <Separator />
-                  <InfoRow label={t.principal} value={formatName(school.校長稱謂, school.校長姓名)} />
-                  <Separator />
                   <InfoRow label={t.gender} value={school.學生性別} icon={Users} />
                   <Separator />
                   <InfoRow label={t.language} value={school.教學語言} icon={BookOpen} />
@@ -197,15 +195,77 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <Separator />
                   <InfoRow label={t.establishedYear} value={school.創校年份} icon={Calendar} />
                   <Separator />
-                  <InfoRow label={t.sponsoringBody} value={school.辦學團體} />
-                  <Separator />
                   <InfoRow label={t.schoolArea} value={school.學校佔地面積} />
                   <Separator />
-                  <InfoRow label={t.schoolBoard} value={school.法團校董會} />
-                  <Separator />
-                  <InfoRow label={t.pta} value={school.家長教師會} />
+                  <InfoRow label={t.schoolDevelopmentPlan} value={school.學校發展計劃} />
                 </CardContent>
               </Card>
+
+              {/* Management Body Card */}
+              {(() => {
+                const hasManagementData = 
+                  formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名) ||
+                  formatName(school.校長稱謂, school.校長姓名) ||
+                  (school.辦學團體 && school.辦學團體 !== '-') ||
+                  (school.法團校董會 && school.法團校董會 !== '-') ||
+                  (school.家長教師會 && school.家長教師會 !== '-') ||
+                  (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                  (school.學校管理架構 && school.學校管理架構 !== '-') ||
+                  (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                  (school.舊生會_校友會 && school.舊生會_校友會 !== '-');
+
+                if (!hasManagementData) return null;
+
+                return (
+                  <Card data-testid="card-management-body">
+                    <CardHeader>
+                      <CardTitle className="text-base">{t.managementBody}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-1">
+                      <InfoRow label={t.supervisor} value={formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名)} />
+                      {formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名) && 
+                        (formatName(school.校長稱謂, school.校長姓名) || (school.辦學團體 && school.辦學團體 !== '-') || 
+                         (school.法團校董會 && school.法團校董會 !== '-') || (school.家長教師會 && school.家長教師會 !== '-') ||
+                         (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.principal} value={formatName(school.校長稱謂, school.校長姓名)} />
+                      {formatName(school.校長稱謂, school.校長姓名) && 
+                        ((school.辦學團體 && school.辦學團體 !== '-') || (school.法團校董會 && school.法團校董會 !== '-') || 
+                         (school.家長教師會 && school.家長教師會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.sponsoringBody} value={school.辦學團體} />
+                      {(school.辦學團體 && school.辦學團體 !== '-') && 
+                        ((school.法團校董會 && school.法團校董會 !== '-') || (school.家長教師會 && school.家長教師會 !== '-') ||
+                         (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.schoolBoard} value={school.法團校董會} />
+                      {(school.法團校董會 && school.法團校董會 !== '-') && 
+                        ((school.家長教師會 && school.家長教師會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.pta} value={school.家長教師會} />
+                      {(school.家長教師會 && school.家長教師會 !== '-') && 
+                        ((school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.supervisorTrainingRate} value={school.校監和校董_校管會主席和成員的培訓達標率} />
+                      {(school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') &&
+                        ((school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.managementStructure} value={school.學校管理架構} />
+                      {(school.學校管理架構 && school.學校管理架構 !== '-') &&
+                        ((school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.schoolBoardDetail} value={school.法團校董會_校管會_校董會} />
+                      {(school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') &&
+                        (school.舊生會_校友會 && school.舊生會_校友會 !== '-') && <Separator />}
+                      <InfoRow label={t.alumniAssociation} value={school.舊生會_校友會} />
+                    </CardContent>
+                  </Card>
+                );
+              })()}
 
               {((school.學校類別2 && school.學校類別2 !== '-') ||
                 (school.一般上學時間 && school.一般上學時間 !== '-') || 
@@ -259,185 +319,6 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   </CardContent>
                 </Card>
               )}
-
-              {((school.校訓 && school.校訓 !== '-') || (school.校風 && school.校風 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-')) && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">{language === 'tc' ? '辦學理念' : '办学理念'}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-1">
-                    {school.校訓 && school.校訓 !== '-' && (
-                      <>
-                        <div className="flex gap-3 py-2">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs text-muted-foreground mb-1">{t.motto}</p>
-                            <p className="text-sm leading-relaxed">{convertText(school.校訓)}</p>
-                          </div>
-                        </div>
-                        {((school.校風 && school.校風 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-')) && <Separator />}
-                      </>
-                    )}
-                    {school.辦學宗旨 && school.辦學宗旨 !== '-' && (
-                      <>
-                        <div className="flex gap-3 py-2">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs text-muted-foreground mb-1">{t.mission}</p>
-                            <p className="text-sm leading-relaxed">{convertText(school.辦學宗旨)}</p>
-                          </div>
-                        </div>
-                        {(school.校風 && school.校風 !== '-') && <Separator />}
-                      </>
-                    )}
-                    {school.校風 && school.校風 !== '-' && (
-                      <div className="flex gap-3 py-2">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-muted-foreground mb-1">{t.schoolCulture}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.校風)}</p>
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              )}
-
-              {(() => {
-                const hasHomeworkData = 
-                  (school.班級教學模式 && school.班級教學模式 !== '-') ||
-                  (school.班級結構備註 && school.班級結構備註 !== '-') ||
-                  (school.分班安排 && school.分班安排 !== '-') ||
-                  (school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-') ||
-                  (school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-') ||
-                  (school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-') ||
-                  (school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-') ||
-                  (school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 !== '-') ||
-                  (school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見 && school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見 !== '-') ||
-                  (school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 && school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 !== '-') ||
-                  (school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉 && school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉 !== '-') ||
-                  (school.多元學習評估 && school.多元學習評估 !== '-') ||
-                  (school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 && school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 !== '-') ||
-                  (school.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課 && school.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課 !== '-');
-
-                if (!hasHomeworkData) return null;
-
-                return (
-                  <Card data-testid="card-homework-arrangement">
-                    <CardHeader>
-                      <CardTitle className="text-base">{t.homeworkArrangement}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {((school.班級教學模式 && school.班級教學模式 !== '-') ||
-                        (school.班級結構備註 && school.班級結構備註 !== '-') ||
-                        (school.分班安排 && school.分班安排 !== '-')) && (
-                        <>
-                          <div className="space-y-2">
-                            {school.班級教學模式 && school.班級教學模式 !== '-' && (
-                              <div data-testid="text-class-teaching-mode">
-                                <p className="text-xs text-muted-foreground mb-1">{t.classTeachingMode}</p>
-                                <p className="text-sm leading-relaxed">{convertText(school.班級教學模式)}</p>
-                              </div>
-                            )}
-                            {school.班級結構備註 && school.班級結構備註 !== '-' && (
-                              <div data-testid="text-class-structure-remarks">
-                                <p className="text-xs text-muted-foreground mb-1">{t.classStructureRemarks}</p>
-                                <p className="text-sm leading-relaxed">{convertText(school.班級結構備註)}</p>
-                              </div>
-                            )}
-                            {school.分班安排 && school.分班安排 !== '-' && (
-                              <div data-testid="text-class-arrangement">
-                                <p className="text-xs text-muted-foreground mb-1">{t.classArrangement}</p>
-                                <p className="text-sm leading-relaxed">{convertText(school.分班安排)}</p>
-                              </div>
-                            )}
-                          </div>
-                          {((school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-') ||
-                            (school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-') ||
-                            (school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-') ||
-                            (school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-') ||
-                            (school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是')) && <Separator />}
-                        </>
-                      )}
-
-                      {((school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-') ||
-                        (school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-') ||
-                        (school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-') ||
-                        (school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-')) && (
-                        <>
-                          <div>
-                            <p className="text-xs text-muted-foreground mb-2">{language === 'tc' ? '測考次數' : '测考次数'}</p>
-                            <Table data-testid="table-testing-schedule">
-                              <TableHeader>
-                                <TableRow>
-                                  <TableHead className="text-xs font-medium">{language === 'tc' ? '年級' : '年级'}</TableHead>
-                                  <TableHead className="text-xs font-medium text-right">{language === 'tc' ? '測驗' : '测验'}</TableHead>
-                                  <TableHead className="text-xs font-medium text-right">{language === 'tc' ? '考試' : '考试'}</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell className="text-sm">{t.grade1}</TableCell>
-                                  <TableCell className="text-sm text-right">
-                                    {convertText(school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-' ? school.全年全科測驗次數_一年級 : '-')}
-                                  </TableCell>
-                                  <TableCell className="text-sm text-right">
-                                    {convertText(school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-' ? school.全年全科考試次數_一年級 : '-')}
-                                  </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                  <TableCell className="text-sm">{language === 'tc' ? '小二至六' : '小二至六'}</TableCell>
-                                  <TableCell className="text-sm text-right">
-                                    {convertText(school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-' ? school.全年全科測驗次數_二至六年級 : '-')}
-                                  </TableCell>
-                                  <TableCell className="text-sm text-right">
-                                    {convertText(school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-' ? school.全年全科考試次數_二至六年級 : '-')}
-                                  </TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
-                          </div>
-                          {(school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && <Separator />}
-                        </>
-                      )}
-
-                      {(school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && (
-                        <div className="flex items-start gap-2" data-testid="badge-policy-p1-alternative">
-                          <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                          <p className="text-sm leading-relaxed">{convertText(t.p1AlternativeAssessment)}</p>
-                        </div>
-                      )}
-
-                      {(() => {
-                        const policyItems = [
-                          { key: 'homework-parents', field: school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見, label: t.homeworkPolicyParents },
-                          { key: 'assessment-online', field: school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉, label: t.assessmentPolicyOnline },
-                          { key: 'homework-online', field: school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉, label: t.homeworkPolicyOnline },
-                          { key: 'diverse-assessment', field: school.多元學習評估, label: t.diverseLearningAssessment },
-                          { key: 'avoid-test-holiday', field: school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息, label: t.avoidTestAfterHoliday },
-                          { key: 'afternoon-homework', field: school.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課, label: t.afternoonHomeworkTime },
-                        ].filter(item => item.field === '是');
-
-                        if (policyItems.length === 0) return null;
-
-                        return (
-                          <>
-                            {(school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && <Separator />}
-                            <div className="space-y-2">
-                              <p className="text-xs text-muted-foreground">{language === 'tc' ? '教學政策' : '教学政策'}</p>
-                              <div className="space-y-2">
-                                {policyItems.map(item => (
-                                  <div key={item.key} className="flex items-start gap-2" data-testid={`badge-policy-${item.key}`}>
-                                    <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm leading-relaxed">{convertText(item.label)}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          </>
-                        );
-                      })()}
-                    </CardContent>
-                  </Card>
-                );
-              })()}
 
               {(school.一條龍中學 && school.一條龍中學 !== '-' || 
                 school.直屬中學 && school.直屬中學 !== '-' || 

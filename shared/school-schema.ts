@@ -13,6 +13,7 @@ export const schoolSchema = z.object({
   學校類別1: z.string(), // 資助/私立/官立
   學校類別2: z.string(), // 全日/上下午
   法團校董會: z.string().optional(),
+  校監和校董_校管會主席和成員的培訓達標率: z.string().optional(),
   校監_校管會主席姓名: z.string().optional(),
   校監_校管會主席稱謂: z.string().optional(),
   校長姓名: z.string().optional(),
@@ -24,6 +25,10 @@ export const schoolSchema = z.object({
   校訓: z.string().optional(),
   學校佔地面積: z.string().optional(),
   教學語言: z.string().optional(),
+  學校管理架構: z.string().optional(),
+  法團校董會_校管會_校董會: z.string().optional(),
+  舊生會_校友會: z.string().optional(),
+  學校發展計劃: z.string().optional(),
   一條龍中學: z.string().optional(),
   直屬中學: z.string().optional(),
   聯繫中學: z.string().optional(),
@@ -39,6 +44,8 @@ export const schoolSchema = z.object({
   堂費: z.string().optional(),
   家長教師會費: z.string().optional(),
   非標準項目的核准收費: z.string().optional(),
+  其他收費_費用: z.string().optional(),
+  學費減免: z.string().optional(),
   課室數目: z.string().optional(),
   禮堂數目: z.string().optional(),
   操場數目: z.string().optional(),
@@ -85,6 +92,30 @@ export const schoolSchema = z.object({
   避免緊接在長假期後安排測考_讓學生在假期有充分的休息: z.string().optional(),
   按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課: z.string().optional(),
   分班安排: z.string().optional(),
+  
+  // Teaching Features (School Life & Activities)
+  健康校園生活: z.string().optional(),
+  學校生活備註: z.string().optional(),
+  全方位學習: z.string().optional(),
+  環保政策: z.string().optional(),
+  學校關注事項: z.string().optional(),
+  家校合作: z.string().optional(),
+  學校特色_其他: z.string().optional(),
+  
+  // Curriculum & Teaching
+  學習和教學策略: z.string().optional(),
+  小學教育課程更新重點的發展: z.string().optional(),
+  共通能力的培養: z.string().optional(),
+  正確價值觀_態度和行為的培養: z.string().optional(),
+  課程剪裁及調適措施: z.string().optional(),
+  
+  // Student Support
+  全校參與照顧學生的多樣性: z.string().optional(),
+  全校參與模式融合教育: z.string().optional(),
+  非華語學生的教育支援: z.string().optional(),
+  
+  // Teacher Professional Development
+  教師專業培訓及發展: z.string().optional(),
 });
 
 export interface Article {
