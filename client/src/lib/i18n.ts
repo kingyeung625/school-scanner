@@ -50,11 +50,14 @@ export const translations = {
     
     // School details
     basicInfo: '基本資料',
+    schoolPhilosophy: '辦學理念',
     contact: '聯絡資料',
+    contactAndLocation: '聯絡資料及位置',
     facilities: '設施',
     teachers: '教師資料',
     fees: '費用',
     about: '關於',
+    teachingFeatures: '教學特色',
     
     // Fields
     schoolName: '學校名稱',
@@ -149,6 +152,43 @@ export const translations = {
     yes: '是',
     no: '否',
     
+    // Management Body
+    managementBody: '管治架構',
+    supervisorTrainingRate: '校監和校董/校管會主席和成員的培訓達標率',
+    managementStructure: '學校管理架構',
+    schoolBoardDetail: '法團校董會/校管會/校董會',
+    alumniAssociation: '舊生會/校友會',
+    schoolDevelopmentPlan: '學校發展計劃',
+    
+    // Additional Fees
+    hallFee: '堂費',
+    otherFees: '其他收費/費用',
+    tuitionReduction: '學費減免',
+    
+    // Teaching Features (School Life & Activities)
+    healthyCampusLife: '健康校園生活',
+    schoolLifeRemarks: '學校生活備註',
+    wholePerson: '全方位學習',
+    environmentalPolicy: '環保政策',
+    schoolFocusAreas: '學校關注事項',
+    homeSchoolCooperation: '家校合作',
+    schoolCharacteristics: '學校特色/其他',
+    
+    // Curriculum & Teaching
+    teachingStrategies: '學習和教學策略',
+    curriculumDevelopment: '小學教育課程更新重點的發展',
+    genericSkills: '共通能力的培養',
+    valuesEducation: '正確價值觀、態度和行為的培養',
+    curriculumAdaptation: '課程剪裁及調適措施',
+    
+    // Student Support
+    studentDiversity: '全校參與照顧學生的多樣性',
+    inclusiveEducation: '全校參與模式融合教育',
+    nonChineseSpeakingSupport: '非華語學生的教育支援',
+    
+    // Teacher Professional Development
+    teacherProfessionalDevelopment: '教師專業培訓及發展',
+    
     // Categories
     categories: {
       資助: '資助',
@@ -215,11 +255,14 @@ export const translations = {
     
     // School details
     basicInfo: '基本资料',
+    schoolPhilosophy: '办学理念',
     contact: '联络资料',
+    contactAndLocation: '联络资料及位置',
     facilities: '设施',
     teachers: '教师资料',
     fees: '费用',
     about: '关于',
+    teachingFeatures: '教学特色',
     
     // Fields
     schoolName: '学校名称',
@@ -313,6 +356,43 @@ export const translations = {
     classArrangement: '分班安排',
     yes: '是',
     no: '否',
+    
+    // Management Body
+    managementBody: '管治架构',
+    supervisorTrainingRate: '校监和校董/校管会主席和成员的培训达标率',
+    managementStructure: '学校管理架构',
+    schoolBoardDetail: '法团校董会/校管会/校董会',
+    alumniAssociation: '旧生会/校友会',
+    schoolDevelopmentPlan: '学校发展计划',
+    
+    // Additional Fees
+    hallFee: '堂费',
+    otherFees: '其他收费/费用',
+    tuitionReduction: '学费减免',
+    
+    // Teaching Features (School Life & Activities)
+    healthyCampusLife: '健康校园生活',
+    schoolLifeRemarks: '学校生活备注',
+    wholePerson: '全方位学习',
+    environmentalPolicy: '环保政策',
+    schoolFocusAreas: '学校关注事项',
+    homeSchoolCooperation: '家校合作',
+    schoolCharacteristics: '学校特色/其他',
+    
+    // Curriculum & Teaching
+    teachingStrategies: '学习和教学策略',
+    curriculumDevelopment: '小学教育课程更新重点的发展',
+    genericSkills: '共通能力的培养',
+    valuesEducation: '正确价值观、态度和行为的培养',
+    curriculumAdaptation: '课程剪裁及调适措施',
+    
+    // Student Support
+    studentDiversity: '全校参与照顾学生的多样性',
+    inclusiveEducation: '全校参与模式融合教育',
+    nonChineseSpeakingSupport: '非华语学生的教育支援',
+    
+    // Teacher Professional Development
+    teacherProfessionalDevelopment: '教师专业培训及发展',
     
     // Categories
     categories: {
