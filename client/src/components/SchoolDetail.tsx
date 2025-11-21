@@ -351,6 +351,347 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
+            <TabsContent value="philosophy" className="space-y-3">
+              {((school.校訓 && school.校訓 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-')) && (
+                <Card data-testid="card-philosophy">
+                  <CardHeader>
+                    <CardTitle className="text-base">{language === 'tc' ? '辦學理念' : '办学理念'}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-1">
+                    {school.校訓 && school.校訓 !== '-' && (
+                      <>
+                        <div className="flex gap-3 py-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground mb-1">{t.motto}</p>
+                            <p className="text-sm leading-relaxed">{convertText(school.校訓)}</p>
+                          </div>
+                        </div>
+                        {((school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-')) && <Separator />}
+                      </>
+                    )}
+                    {school.辦學宗旨 && school.辦學宗旨 !== '-' && (
+                      <>
+                        <div className="flex gap-3 py-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground mb-1">{t.mission}</p>
+                            <p className="text-sm leading-relaxed">{convertText(school.辦學宗旨)}</p>
+                          </div>
+                        </div>
+                        {(school.校風 && school.校風 !== '-') && <Separator />}
+                      </>
+                    )}
+                    {school.校風 && school.校風 !== '-' && (
+                      <div className="flex gap-3 py-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-muted-foreground mb-1">{t.schoolCulture}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.校風)}</p>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            <TabsContent value="homework" className="space-y-3">
+              {(() => {
+                const hasHomeworkData = 
+                  (school.班級教學模式 && school.班級教學模式 !== '-') ||
+                  (school.班級結構備註 && school.班級結構備註 !== '-') ||
+                  (school.分班安排 && school.分班安排 !== '-') ||
+                  (school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-') ||
+                  (school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-') ||
+                  (school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-') ||
+                  (school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-') ||
+                  (school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 !== '-') ||
+                  (school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見 && school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見 !== '-') ||
+                  (school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 && school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 !== '-') ||
+                  (school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉 && school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉 !== '-') ||
+                  (school.多元學習評估 && school.多元學習評估 !== '-') ||
+                  (school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 && school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 !== '-') ||
+                  (school.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課 && school.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課 !== '-');
+
+                if (!hasHomeworkData) return null;
+
+                return (
+                  <Card data-testid="card-homework-arrangement">
+                    <CardHeader>
+                      <CardTitle className="text-base">{t.homeworkArrangement}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {((school.班級教學模式 && school.班級教學模式 !== '-') ||
+                        (school.班級結構備註 && school.班級結構備註 !== '-') ||
+                        (school.分班安排 && school.分班安排 !== '-')) && (
+                        <>
+                          <div className="space-y-2">
+                            {school.班級教學模式 && school.班級教學模式 !== '-' && (
+                              <div data-testid="text-class-teaching-mode">
+                                <p className="text-xs text-muted-foreground mb-1">{t.classTeachingMode}</p>
+                                <p className="text-sm leading-relaxed">{convertText(school.班級教學模式)}</p>
+                              </div>
+                            )}
+                            {school.班級結構備註 && school.班級結構備註 !== '-' && (
+                              <div data-testid="text-class-structure-remarks">
+                                <p className="text-xs text-muted-foreground mb-1">{t.classStructureRemarks}</p>
+                                <p className="text-sm leading-relaxed">{convertText(school.班級結構備註)}</p>
+                              </div>
+                            )}
+                            {school.分班安排 && school.分班安排 !== '-' && (
+                              <div data-testid="text-class-arrangement">
+                                <p className="text-xs text-muted-foreground mb-1">{t.classArrangement}</p>
+                                <p className="text-sm leading-relaxed">{convertText(school.分班安排)}</p>
+                              </div>
+                            )}
+                          </div>
+                          {((school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-') ||
+                            (school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-') ||
+                            (school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-') ||
+                            (school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-') ||
+                            (school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是')) && <Separator />}
+                        </>
+                      )}
+
+                      {((school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-') ||
+                        (school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-') ||
+                        (school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-') ||
+                        (school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-')) && (
+                        <>
+                          <div>
+                            <p className="text-xs text-muted-foreground mb-2">{language === 'tc' ? '測考次數' : '测考次数'}</p>
+                            <Table data-testid="table-testing-schedule">
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead className="text-xs font-medium">{language === 'tc' ? '年級' : '年级'}</TableHead>
+                                  <TableHead className="text-xs font-medium text-right">{language === 'tc' ? '測驗' : '测验'}</TableHead>
+                                  <TableHead className="text-xs font-medium text-right">{language === 'tc' ? '考試' : '考试'}</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell className="text-sm">{t.grade1}</TableCell>
+                                  <TableCell className="text-sm text-right">
+                                    {convertText(school.全年全科測驗次數_一年級 && school.全年全科測驗次數_一年級 !== '-' ? school.全年全科測驗次數_一年級 : '-')}
+                                  </TableCell>
+                                  <TableCell className="text-sm text-right">
+                                    {convertText(school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-' ? school.全年全科考試次數_一年級 : '-')}
+                                  </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                  <TableCell className="text-sm">{language === 'tc' ? '小二至六' : '小二至六'}</TableCell>
+                                  <TableCell className="text-sm text-right">
+                                    {convertText(school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-' ? school.全年全科測驗次數_二至六年級 : '-')}
+                                  </TableCell>
+                                  <TableCell className="text-sm text-right">
+                                    {convertText(school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-' ? school.全年全科考試次數_二至六年級 : '-')}
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </div>
+                          {(school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && <Separator />}
+                        </>
+                      )}
+
+                      {(school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && (
+                        <div className="flex items-start gap-2" data-testid="badge-policy-p1-alternative">
+                          <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                          <p className="text-sm leading-relaxed">{convertText(t.p1AlternativeAssessment)}</p>
+                        </div>
+                      )}
+
+                      {(() => {
+                        const policyItems = [
+                          { key: 'homework-parents', field: school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見, label: t.homeworkPolicyParents },
+                          { key: 'assessment-online', field: school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉, label: t.assessmentPolicyOnline },
+                          { key: 'homework-online', field: school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉, label: t.homeworkPolicyOnline },
+                          { key: 'diverse-assessment', field: school.多元學習評估, label: t.diverseLearningAssessment },
+                          { key: 'avoid-test-holiday', field: school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息, label: t.avoidTestAfterHoliday },
+                          { key: 'afternoon-homework', field: school.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課, label: t.afternoonHomeworkTime },
+                        ].filter(item => item.field === '是');
+
+                        if (policyItems.length === 0) return null;
+
+                        return (
+                          <>
+                            {(school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && <Separator />}
+                            <div className="space-y-2">
+                              <p className="text-xs text-muted-foreground">{language === 'tc' ? '教學政策' : '教学政策'}</p>
+                              <div className="space-y-2">
+                                {policyItems.map(item => (
+                                  <div key={item.key} className="flex items-start gap-2" data-testid={`badge-policy-${item.key}`}>
+                                    <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                                    <p className="text-sm leading-relaxed">{convertText(item.label)}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </CardContent>
+                  </Card>
+                );
+              })()}
+            </TabsContent>
+
+            <TabsContent value="teaching-features" className="space-y-3">
+              {/* School Life & Activities Section */}
+              {(() => {
+                const hasSchoolLifeData = 
+                  (school.健康校園生活 && school.健康校園生活 !== '-') ||
+                  (school.學校生活備註 && school.學校生活備註 !== '-') ||
+                  (school.全方位學習 && school.全方位學習 !== '-') ||
+                  (school.環保政策 && school.環保政策 !== '-') ||
+                  (school.學校關注事項 && school.學校關注事項 !== '-') ||
+                  (school.家校合作 && school.家校合作 !== '-') ||
+                  (school.學校特色_其他 && school.學校特色_其他 !== '-');
+
+                if (!hasSchoolLifeData) return null;
+
+                return (
+                  <Card data-testid="card-school-life">
+                    <CardHeader>
+                      <CardTitle className="text-base">{language === 'tc' ? '學校生活與活動' : '学校生活与活动'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      {school.健康校園生活 && school.健康校園生活 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.healthyCampusLife}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.健康校園生活)}</p>
+                        </div>
+                      )}
+                      {school.全方位學習 && school.全方位學習 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.wholePerson}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.全方位學習)}</p>
+                        </div>
+                      )}
+                      {school.環保政策 && school.環保政策 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.environmentalPolicy}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.環保政策)}</p>
+                        </div>
+                      )}
+                      {school.學校關注事項 && school.學校關注事項 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.schoolFocusAreas}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.學校關注事項)}</p>
+                        </div>
+                      )}
+                      {school.家校合作 && school.家校合作 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.homeSchoolCooperation}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.家校合作)}</p>
+                        </div>
+                      )}
+                      {school.學校生活備註 && school.學校生活備註 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.schoolLifeRemarks}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.學校生活備註)}</p>
+                        </div>
+                      )}
+                      {school.學校特色_其他 && school.學校特色_其他 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.schoolCharacteristics}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.學校特色_其他)}</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })()}
+
+              {/* Curriculum & Teaching Section */}
+              {(() => {
+                const hasCurriculumData = 
+                  (school.學習和教學策略 && school.學習和教學策略 !== '-') ||
+                  (school.小學教育課程更新重點的發展 && school.小學教育課程更新重點的發展 !== '-') ||
+                  (school.共通能力的培養 && school.共通能力的培養 !== '-') ||
+                  (school.正確價值觀_態度和行為的培養 && school.正確價值觀_態度和行為的培養 !== '-') ||
+                  (school.課程剪裁及調適措施 && school.課程剪裁及調適措施 !== '-');
+
+                if (!hasCurriculumData) return null;
+
+                return (
+                  <Card data-testid="card-curriculum">
+                    <CardHeader>
+                      <CardTitle className="text-base">{language === 'tc' ? '課程與教學' : '课程与教学'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      {school.學習和教學策略 && school.學習和教學策略 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.teachingStrategies}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.學習和教學策略)}</p>
+                        </div>
+                      )}
+                      {school.小學教育課程更新重點的發展 && school.小學教育課程更新重點的發展 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.curriculumDevelopment}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.小學教育課程更新重點的發展)}</p>
+                        </div>
+                      )}
+                      {school.共通能力的培養 && school.共通能力的培養 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.genericSkills}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.共通能力的培養)}</p>
+                        </div>
+                      )}
+                      {school.正確價值觀_態度和行為的培養 && school.正確價值觀_態度和行為的培養 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.valuesEducation}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.正確價值觀_態度和行為的培養)}</p>
+                        </div>
+                      )}
+                      {school.課程剪裁及調適措施 && school.課程剪裁及調適措施 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.curriculumAdaptation}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.課程剪裁及調適措施)}</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })()}
+
+              {/* Student Support Section */}
+              {(() => {
+                const hasStudentSupportData = 
+                  (school.全校參與照顧學生的多樣性 && school.全校參與照顧學生的多樣性 !== '-') ||
+                  (school.全校參與模式融合教育 && school.全校參與模式融合教育 !== '-') ||
+                  (school.非華語學生的教育支援 && school.非華語學生的教育支援 !== '-');
+
+                if (!hasStudentSupportData) return null;
+
+                return (
+                  <Card data-testid="card-student-support">
+                    <CardHeader>
+                      <CardTitle className="text-base">{language === 'tc' ? '學生支援' : '学生支援'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      {school.全校參與照顧學生的多樣性 && school.全校參與照顧學生的多樣性 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.studentDiversity}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.全校參與照顧學生的多樣性)}</p>
+                        </div>
+                      )}
+                      {school.全校參與模式融合教育 && school.全校參與模式融合教育 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.inclusiveEducation}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.全校參與模式融合教育)}</p>
+                        </div>
+                      )}
+                      {school.非華語學生的教育支援 && school.非華語學生的教育支援 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.nonChineseSpeakingSupport}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.非華語學生的教育支援)}</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })()}
+            </TabsContent>
+
             <TabsContent value="contact" className="space-y-3">
               <Card>
                 <CardHeader>
