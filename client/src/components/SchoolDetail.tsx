@@ -692,7 +692,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               })()}
             </TabsContent>
 
-            <TabsContent value="contact-map" className="space-y-3">
+            <TabsContent value="contact" className="space-y-3">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.contact}</CardTitle>
