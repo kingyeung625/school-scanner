@@ -1,6 +1,7 @@
 import { MapPin, Users, ChevronRight, Newspaper } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { School } from '@shared/school-schema';
 
@@ -22,11 +23,20 @@ export default function SchoolListItem({ school, onViewDetails, isSelected, onTo
     >
       {onToggleSelect && (
         <div onClick={(e) => e.stopPropagation()}>
-          <Checkbox
-            checked={isSelected}
-            onCheckedChange={() => onToggleSelect(school)}
-            data-testid={`checkbox-select-school-${school.id}`}
-          />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <Checkbox
+                  checked={isSelected}
+                  onCheckedChange={() => onToggleSelect(school)}
+                  data-testid={`checkbox-select-school-${school.id}`}
+                />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t.selectToCompare}</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       )}
       

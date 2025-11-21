@@ -1,8 +1,9 @@
-import { X, ArrowLeft } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { X, ArrowLeft, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { School } from '@shared/school-schema';
 
@@ -14,6 +15,30 @@ interface ComparisonViewProps {
 
 export default function ComparisonView({ schools, onClose, onRemove }: ComparisonViewProps) {
   const { t, convertText } = useLanguage();
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scrollElement = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    
+    const handleScroll = () => {
+      if (scrollElement) {
+        setShowBackToTop(scrollElement.scrollTop > 200);
+      }
+    };
+
+    if (scrollElement) {
+      scrollElement.addEventListener('scroll', handleScroll);
+      return () => scrollElement.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  const scrollToTop = () => {
+    const scrollElement = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollElement) {
+      scrollElement.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const ComparisonRow = ({ label, getValue }: { label: string; getValue: (school: School) => string | undefined }) => (
     <div className="border-b last:border-b-0">
@@ -78,51 +103,193 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
         </div>
       </div>
 
-      <ScrollArea className="flex-1">
-        <div className="border-l border-r">
-          <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] border-b bg-muted/50">
-            <div className="p-4 font-semibold">
-              {t.schoolName}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {schools.map((school, index) => (
-                <div
-                  key={school.id}
-                  className={`p-4 font-medium ${index !== schools.length - 1 ? 'border-b md:border-b-0 md:border-r' : ''}`}
-                >
-                  {convertText(school.學校名稱)}
-                </div>
-              ))}
+      <ScrollArea className="flex-1" ref={scrollAreaRef}>
+        <div className="max-w-7xl mx-auto p-4 md:p-6">
+          {/* School Names Header */}
+          <div className="border rounded-md mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] bg-muted/50">
+              <div className="p-4 font-semibold">
+                {t.schoolName}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {schools.map((school, index) => (
+                  <div
+                    key={school.id}
+                    className={`p-4 font-medium ${index !== schools.length - 1 ? 'border-b md:border-b-0 md:border-r' : ''}`}
+                  >
+                    {convertText(school.學校名稱)}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          <ComparisonRow label={t.region} getValue={(s) => s.區域} />
-          <ComparisonRow label={t.schoolType} getValue={(s) => s.學校類別1} />
-          <ComparisonRow label={t.gender} getValue={(s) => s.學生性別} />
-          <ComparisonRow label={t.language} getValue={(s) => s.教學語言} />
-          <ComparisonRow label={t.religion} getValue={(s) => s.宗教} />
-          <ComparisonRow label={t.establishedYear} getValue={(s) => s.創校年份} />
-          <ComparisonRow label={t.sponsoringBody} getValue={(s) => s.辦學團體} />
-          <ComparisonRow label={t.motto} getValue={(s) => s.校訓} />
-          <ComparisonRow label={t.address} getValue={(s) => s.學校地址} />
-          <ComparisonRow label={t.phone} getValue={(s) => s.學校電話} />
-          <ComparisonRow label={t.tuition} getValue={(s) => s.學費} />
-          <ComparisonRow label={t.classrooms} getValue={(s) => s.課室數目} />
-          <ComparisonRow label={t.totalTeachers} getValue={(s) => s.教師總人數} />
-          <ComparisonRow
-            label={t.trainedRate}
-            getValue={(s) => s.已接受師資培訓人數百分率 ? `${s.已接受師資培訓人數百分率}%` : undefined}
-          />
-          <ComparisonRow
-            label={t.degreeRate}
-            getValue={(s) => s.學士人數百分率 ? `${s.學士人數百分率}%` : undefined}
-          />
-          <ComparisonRow
-            label={t.masterRate}
-            getValue={(s) => s.碩士博士或以上人數百分率 ? `${s.碩士博士或以上人數百分率}%` : undefined}
-          />
+          <Accordion type="multiple" className="space-y-4">
+            {/* Section 1: Basic Information */}
+            <AccordionItem value="basic-info" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-basic-info">
+                {t.comparisonBasicInfo}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.region} getValue={(s) => s.區域} />
+                  <ComparisonRow label={t.schoolNet} getValue={(s) => s.小一學校網} />
+                  <ComparisonRow label={t.schoolType} getValue={(s) => s.學校類別1} />
+                  <ComparisonRow label={t.classTime} getValue={(s) => s.學校類別2} />
+                  <ComparisonRow label={t.gender} getValue={(s) => s.學生性別} />
+                  <ComparisonRow label={t.language} getValue={(s) => s.教學語言} />
+                  <ComparisonRow label={t.religion} getValue={(s) => s.宗教} />
+                  <ComparisonRow label={t.establishedYear} getValue={(s) => s.創校年份} />
+                  <ComparisonRow label={t.sponsoringBody} getValue={(s) => s.辦學團體} />
+                  <ComparisonRow label={t.motto} getValue={(s) => s.校訓} />
+                  <ComparisonRow label={t.throughTrain} getValue={(s) => s.一條龍中學} />
+                  <ComparisonRow label={t.directSchools} getValue={(s) => s.直屬中學} />
+                  <ComparisonRow label={t.linkedSchools} getValue={(s) => s.聯繫中學} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 2: School Operations */}
+            <AccordionItem value="operations" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-operations">
+                {t.comparisonOperations}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.generalArrivalTime} getValue={(s) => s.一般上學時間} />
+                  <ComparisonRow label={t.generalDismissalTime} getValue={(s) => s.一般放學時間} />
+                  <ComparisonRow label={t.lunchStartTime} getValue={(s) => s.午膳開始時間} />
+                  <ComparisonRow label={t.lunchEndTime} getValue={(s) => s.午膳結束時間} />
+                  <ComparisonRow label={t.lunchArrangement} getValue={(s) => s.午膳安排} />
+                  <ComparisonRow label={t.schoolBus} getValue={(s) => s.校車} />
+                  <ComparisonRow label={t.nannyBus} getValue={(s) => s.保姆車} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 3: Fees */}
+            <AccordionItem value="fees" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-fees">
+                {t.comparisonFees}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.tuition} getValue={(s) => s.學費} />
+                  <ComparisonRow label={t.ptaFee} getValue={(s) => s.家長教師會費} />
+                  <ComparisonRow label={t.tuitionReduction} getValue={(s) => s.學費減免} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 4: Philosophy */}
+            <AccordionItem value="philosophy" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-philosophy">
+                {t.comparisonPhilosophy}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.mission} getValue={(s) => s.辦學宗旨} />
+                  <ComparisonRow label={t.schoolCulture} getValue={(s) => s.校風} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 5: Teaching & Class Structure */}
+            <AccordionItem value="teaching" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-teaching">
+                {t.comparisonTeaching}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.classTeachingMode} getValue={(s) => s.班級教學模式} />
+                  <ComparisonRow label={t.classStructureRemarks} getValue={(s) => s.班級結構備註} />
+                  <ComparisonRow label={t.classArrangement} getValue={(s) => s.分班安排} />
+                  <ComparisonRow label={t.teachingStrategies} getValue={(s) => s.學習和教學策略} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 6: Assessment & Homework */}
+            <AccordionItem value="assessment" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-assessment">
+                {t.comparisonAssessment}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.testCountYear1} getValue={(s) => s.全年全科測驗次數_一年級} />
+                  <ComparisonRow label={t.examCountYear1} getValue={(s) => s.全年全科考試次數_一年級} />
+                  <ComparisonRow label={t.p1AlternativeAssessment} getValue={(s) => s.小一上學期以多元化的進展性評估代替測驗及考試} />
+                  <ComparisonRow label={t.testCountYear2to6} getValue={(s) => s.全年全科測驗次數_二至六年級} />
+                  <ComparisonRow label={t.examCountYear2to6} getValue={(s) => s.全年全科考試次數_二至六年級} />
+                  <ComparisonRow label={t.diverseLearningAssessment} getValue={(s) => s.多元學習評估} />
+                  <ComparisonRow label={t.avoidTestAfterHoliday} getValue={(s) => s.避免緊接在長假期後安排測考_讓學生在假期有充分的休息} />
+                  <ComparisonRow label={t.afternoonHomeworkTime} getValue={(s) => s.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 7: Curriculum Development */}
+            <AccordionItem value="curriculum" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-curriculum">
+                {t.comparisonCurriculum}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.curriculumDevelopment} getValue={(s) => s.小學教育課程更新重點的發展} />
+                  <ComparisonRow label={t.genericSkills} getValue={(s) => s.共通能力的培養} />
+                  <ComparisonRow label={t.valuesEducation} getValue={(s) => s.正確價值觀_態度和行為的培養} />
+                  <ComparisonRow label={t.curriculumAdaptation} getValue={(s) => s.課程剪裁及調適措施} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 8: Student Support */}
+            <AccordionItem value="support" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-support">
+                {t.comparisonSupport}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.studentDiversity} getValue={(s) => s.全校參與照顧學生的多樣性} />
+                  <ComparisonRow label={t.inclusiveEducation} getValue={(s) => s.全校參與模式融合教育} />
+                  <ComparisonRow label={t.nonChineseSpeakingSupport} getValue={(s) => s.非華語學生的教育支援} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Section 9: School Life & Activities */}
+            <AccordionItem value="school-life" className="border rounded-md px-4">
+              <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-school-life">
+                {t.comparisonSchoolLife}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="border-t">
+                  <ComparisonRow label={t.healthyCampusLife} getValue={(s) => s.健康校園生活} />
+                  <ComparisonRow label={t.wholePerson} getValue={(s) => s.全方位學習} />
+                  <ComparisonRow label={t.environmentalPolicy} getValue={(s) => s.環保政策} />
+                  <ComparisonRow label={t.schoolFocusAreas} getValue={(s) => s.學校關注事項} />
+                  <ComparisonRow label={t.homeSchoolCooperation} getValue={(s) => s.家校合作} />
+                  <ComparisonRow label={t.schoolLifeRemarks} getValue={(s) => s.學校生活備註} />
+                  <ComparisonRow label={t.schoolCharacteristics} getValue={(s) => s.學校特色_其他} />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </ScrollArea>
+
+      {/* Floating Back to Top Button */}
+      {showBackToTop && (
+        <Button
+          variant="default"
+          size="icon"
+          className="fixed bottom-8 right-8 rounded-full shadow-lg z-50"
+          onClick={scrollToTop}
+          data-testid="button-back-to-top"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </Button>
+      )}
     </div>
   );
 }

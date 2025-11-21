@@ -47,6 +47,19 @@ export const translations = {
     removeFromComparison: '移除',
     clearComparison: '清除比較',
     maxComparison: '最多可比較4所學校',
+    selectToCompare: '選擇以比較學校',
+    backToTop: '返回頂部',
+    
+    // Comparison sections
+    comparisonBasicInfo: '基本資料',
+    comparisonOperations: '上課時間及交通',
+    comparisonFees: '費用',
+    comparisonPhilosophy: '辦學理念',
+    comparisonTeaching: '教學與班級',
+    comparisonAssessment: '評估與功課',
+    comparisonCurriculum: '課程發展',
+    comparisonSupport: '學生支援',
+    comparisonSchoolLife: '學校生活與特色',
     
     // School details
     basicInfo: '基本資料',
@@ -252,6 +265,19 @@ export const translations = {
     removeFromComparison: '移除',
     clearComparison: '清除比较',
     maxComparison: '最多可比较4所学校',
+    selectToCompare: '选择以比较学校',
+    backToTop: '返回顶部',
+    
+    // Comparison sections
+    comparisonBasicInfo: '基本资料',
+    comparisonOperations: '上课时间及交通',
+    comparisonFees: '费用',
+    comparisonPhilosophy: '办学理念',
+    comparisonTeaching: '教学与班级',
+    comparisonAssessment: '评估与功课',
+    comparisonCurriculum: '课程发展',
+    comparisonSupport: '学生支援',
+    comparisonSchoolLife: '学校生活与特色',
     
     // School details
     basicInfo: '基本资料',
