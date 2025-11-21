@@ -173,7 +173,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
         
         <div className="max-w-5xl mx-auto p-4 md:p-6">
           <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="sticky top-0 z-50 grid w-full grid-cols-3 md:grid-cols-9 mb-6 bg-card border-b shadow-sm">
+            <TabsList className="sticky top-0 z-50 grid w-full grid-cols-3 [@media(min-width:768px)]:grid-cols-9 gap-1 mb-6 bg-card border-b shadow-sm p-2 h-auto min-h-fit">
               <TabsTrigger value="basic" data-testid="tab-basic" className="text-xs">{t.basicInfo}</TabsTrigger>
               <TabsTrigger value="philosophy" data-testid="tab-philosophy" className="text-xs">{t.schoolPhilosophy}</TabsTrigger>
               <TabsTrigger value="homework" data-testid="tab-homework" className="text-xs">{t.homeworkArrangement}</TabsTrigger>
