@@ -2,6 +2,7 @@ import { X, MapPin, Phone, Mail, Globe, Users, BookOpen, Building2, DollarSign, 
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -136,34 +137,44 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
   const mapUrl = getMapUrl();
 
   return (
-    <div className="fixed inset-0 bg-background z-50 flex flex-col">
-      <div className="flex items-center justify-between p-4 md:p-6 border-b">
-        <div className="flex-1 min-w-0 pr-4">
-          <h1 className="text-xl md:text-2xl font-semibold leading-relaxed" data-testid="text-school-detail-name">
-            {convertText(school.學校名稱)}
-          </h1>
-          <div className="flex flex-wrap gap-2 mt-2">
-            <Badge variant="secondary">{convertText(school.學校類別1)}</Badge>
-            <Badge variant="outline">{convertText(school.區域)}</Badge>
-            {school.宗教 && school.宗教 !== '不適用' && (
-              <Badge variant="outline">{convertText(school.宗教)}</Badge>
-            )}
-            {school.小一學校網 && school.小一學校網 !== '/' && (
-              <Badge variant="outline">{t.schoolNetwork} {school.小一學校網}</Badge>
-            )}
+    <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent 
+        className="max-w-6xl h-[90vh] p-0 gap-0"
+        aria-labelledby="school-detail-title"
+        aria-describedby="school-detail-description"
+      >
+        <div className="flex items-center justify-between p-4 md:p-6 border-b shrink-0">
+          <div className="flex-1 min-w-0 pr-4">
+            <h1 
+              id="school-detail-title"
+              className="text-xl md:text-2xl font-semibold leading-relaxed" 
+              data-testid="text-school-detail-name"
+            >
+              {convertText(school.學校名稱)}
+            </h1>
+            <div id="school-detail-description" className="flex flex-wrap gap-2 mt-2">
+              <Badge variant="secondary">{convertText(school.學校類別1)}</Badge>
+              <Badge variant="outline">{convertText(school.區域)}</Badge>
+              {school.宗教 && school.宗教 !== '不適用' && (
+                <Badge variant="outline">{convertText(school.宗教)}</Badge>
+              )}
+              {school.小一學校網 && school.小一學校網 !== '/' && (
+                <Badge variant="outline">{t.schoolNetwork} {school.小一學校網}</Badge>
+              )}
+            </div>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            aria-label={t.close || "Close"}
+            data-testid="button-close-detail"
+          >
+            <X className="h-5 w-5" />
+          </Button>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onClose}
-          data-testid="button-close-detail"
-        >
-          <X className="h-5 w-5" />
-        </Button>
-      </div>
 
-      <ScrollArea className="flex-1">
+        <ScrollArea className="flex-1">
         {/* Article Carousel - Full-width responsive display */}
         {school.articles && school.articles.length > 0 && (
           <div className="w-full">
@@ -1040,7 +1051,8 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
             </TabsContent>
           </Tabs>
         </div>
-      </ScrollArea>
-    </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
   );
 }
