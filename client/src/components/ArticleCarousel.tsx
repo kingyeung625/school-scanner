@@ -71,14 +71,9 @@ export default function ArticleCarousel({ articles }: ArticleCarouselProps) {
     if (!emblaApi) return;
     
     const onInit = () => {
-      console.log('[ArticleCarousel] Embla initialized, starting autoplay');
+      console.log('[ArticleCarousel] Embla initialized');
       onSelect();
-      
-      // Start autoplay using ref directly
-      if (autoplayRef.current) {
-        autoplayRef.current.play();
-        console.log('[ArticleCarousel] Autoplay.play() called via ref');
-      }
+      // Autoplay starts automatically via plugin configuration
     };
     
     // Call onInit immediately if already initialized, or wait for init event
