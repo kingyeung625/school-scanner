@@ -37,6 +37,10 @@ Preferred communication style: Simple, everyday language.
 
 The application emphasizes information density and clear presentation. School detail views are organized into a 9-tab architecture covering philosophy, homework, teaching features, facilities, class distribution, teachers, fees, and contact information. Responsive design is a core principle, with elements like article carousels adapting for various screen sizes and supporting features like autoplay and swipe gestures. Conditional rendering ensures that UI elements only display when relevant data is available, preventing clutter. Filtering interfaces are streamlined for usability.
 
+### HTML Content Rendering
+
+Long-form text fields from the CSV database contain HTML formatting (e.g., `<br>` tags, numbered lists). A custom `HtmlContent` component safely renders this HTML using `dangerouslySetInnerHTML` while applying bilingual text conversion. This component is used consistently across all long-form text fields in the Philosophy, Homework, and Teaching Features tabs to ensure proper formatting and readability.
+
 ## External Dependencies
 
 **UI Component Framework**: Radix UI primitives, shadcn/ui.
