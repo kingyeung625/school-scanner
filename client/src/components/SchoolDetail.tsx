@@ -58,6 +58,16 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
     );
   };
 
+  // Helper: Render HTML content safely
+  const HtmlContent = ({ content }: { content: string }) => {
+    return (
+      <div 
+        className="text-sm leading-relaxed [&_br]:block [&_br]:my-1"
+        dangerouslySetInnerHTML={{ __html: convertText(content) }}
+      />
+    );
+  };
+
   // Prepare teacher qualification chart data (4 bars)
   const getQualificationChartData = () => {
     const data = [];
@@ -358,7 +368,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                         <div className="flex gap-3 py-2">
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-muted-foreground mb-1">{t.motto}</p>
-                            <p className="text-sm leading-relaxed">{convertText(school.校訓)}</p>
+                            <HtmlContent content={school.校訓} />
                           </div>
                         </div>
                         {((school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-') || (school.學校發展計劃 && school.學校發展計劃 !== '-')) && <Separator />}
@@ -369,7 +379,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                         <div className="flex gap-3 py-2">
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-muted-foreground mb-1">{t.mission}</p>
-                            <p className="text-sm leading-relaxed">{convertText(school.辦學宗旨)}</p>
+                            <HtmlContent content={school.辦學宗旨} />
                           </div>
                         </div>
                         {((school.校風 && school.校風 !== '-') || (school.學校發展計劃 && school.學校發展計劃 !== '-')) && <Separator />}
@@ -380,7 +390,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                         <div className="flex gap-3 py-2">
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-muted-foreground mb-1">{t.schoolCulture}</p>
-                            <p className="text-sm leading-relaxed">{convertText(school.校風)}</p>
+                            <HtmlContent content={school.校風} />
                           </div>
                         </div>
                         {(school.學校發展計劃 && school.學校發展計劃 !== '-') && <Separator />}
@@ -390,7 +400,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       <div className="flex gap-3 py-2">
                         <div className="flex-1 min-w-0">
                           <p className="text-xs text-muted-foreground mb-1">{t.schoolDevelopmentPlan}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.學校發展計劃)}</p>
+                          <HtmlContent content={school.學校發展計劃} />
                         </div>
                       </div>
                     )}
@@ -557,19 +567,19 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       {school.全校參與照顧學生的多樣性 && school.全校參與照顧學生的多樣性 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.studentDiversity}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.全校參與照顧學生的多樣性)}</p>
+                          <HtmlContent content={school.全校參與照顧學生的多樣性} />
                         </div>
                       )}
                       {school.全校參與模式融合教育 && school.全校參與模式融合教育 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.inclusiveEducation}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.全校參與模式融合教育)}</p>
+                          <HtmlContent content={school.全校參與模式融合教育} />
                         </div>
                       )}
                       {school.非華語學生的教育支援 && school.非華語學生的教育支援 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.nonChineseSpeakingSupport}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.非華語學生的教育支援)}</p>
+                          <HtmlContent content={school.非華語學生的教育支援} />
                         </div>
                       )}
                     </CardContent>
@@ -601,43 +611,43 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       {school.健康校園生活 && school.健康校園生活 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.healthyCampusLife}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.健康校園生活)}</p>
+                          <HtmlContent content={school.健康校園生活} />
                         </div>
                       )}
                       {school.全方位學習 && school.全方位學習 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.wholePerson}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.全方位學習)}</p>
+                          <HtmlContent content={school.全方位學習} />
                         </div>
                       )}
                       {school.環保政策 && school.環保政策 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.environmentalPolicy}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.環保政策)}</p>
+                          <HtmlContent content={school.環保政策} />
                         </div>
                       )}
                       {school.學校關注事項 && school.學校關注事項 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.schoolFocusAreas}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.學校關注事項)}</p>
+                          <HtmlContent content={school.學校關注事項} />
                         </div>
                       )}
                       {school.家校合作 && school.家校合作 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.homeSchoolCooperation}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.家校合作)}</p>
+                          <HtmlContent content={school.家校合作} />
                         </div>
                       )}
                       {school.學校生活備註 && school.學校生活備註 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.schoolLifeRemarks}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.學校生活備註)}</p>
+                          <HtmlContent content={school.學校生活備註} />
                         </div>
                       )}
                       {school.學校特色_其他 && school.學校特色_其他 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.schoolCharacteristics}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.學校特色_其他)}</p>
+                          <HtmlContent content={school.學校特色_其他} />
                         </div>
                       )}
                     </CardContent>
@@ -665,31 +675,31 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       {school.學習和教學策略 && school.學習和教學策略 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.teachingStrategies}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.學習和教學策略)}</p>
+                          <HtmlContent content={school.學習和教學策略} />
                         </div>
                       )}
                       {school.小學教育課程更新重點的發展 && school.小學教育課程更新重點的發展 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.curriculumDevelopment}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.小學教育課程更新重點的發展)}</p>
+                          <HtmlContent content={school.小學教育課程更新重點的發展} />
                         </div>
                       )}
                       {school.共通能力的培養 && school.共通能力的培養 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.genericSkills}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.共通能力的培養)}</p>
+                          <HtmlContent content={school.共通能力的培養} />
                         </div>
                       )}
                       {school.正確價值觀_態度和行為的培養 && school.正確價值觀_態度和行為的培養 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.valuesEducation}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.正確價值觀_態度和行為的培養)}</p>
+                          <HtmlContent content={school.正確價值觀_態度和行為的培養} />
                         </div>
                       )}
                       {school.課程剪裁及調適措施 && school.課程剪裁及調適措施 !== '-' && (
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.curriculumAdaptation}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.課程剪裁及調適措施)}</p>
+                          <HtmlContent content={school.課程剪裁及調適措施} />
                         </div>
                       )}
                     </CardContent>
