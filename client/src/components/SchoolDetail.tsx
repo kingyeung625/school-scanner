@@ -196,8 +196,6 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   <InfoRow label={t.establishedYear} value={school.創校年份} icon={Calendar} />
                   <Separator />
                   <InfoRow label={t.schoolArea} value={school.學校佔地面積} />
-                  <Separator />
-                  <InfoRow label={t.schoolDevelopmentPlan} value={school.學校發展計劃} />
                 </CardContent>
               </Card>
 
@@ -222,44 +220,41 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       <CardTitle className="text-base">{t.managementBody}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-1">
-                      <InfoRow label={t.supervisor} value={formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名)} />
-                      {formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名) && 
-                        (formatName(school.校長稱謂, school.校長姓名) || (school.辦學團體 && school.辦學團體 !== '-') || 
-                         (school.法團校董會 && school.法團校董會 !== '-') || (school.家長教師會 && school.家長教師會 !== '-') ||
-                         (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
-                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
-                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.principal} value={formatName(school.校長稱謂, school.校長姓名)} />
-                      {formatName(school.校長稱謂, school.校長姓名) && 
-                        ((school.辦學團體 && school.辦學團體 !== '-') || (school.法團校董會 && school.法團校董會 !== '-') || 
-                         (school.家長教師會 && school.家長教師會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
-                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
-                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
                       <InfoRow label={t.sponsoringBody} value={school.辦學團體} />
                       {(school.辦學團體 && school.辦學團體 !== '-') && 
-                        ((school.法團校董會 && school.法團校董會 !== '-') || (school.家長教師會 && school.家長教師會 !== '-') ||
+                        (formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名) || formatName(school.校長稱謂, school.校長姓名) || 
+                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
+                         (school.法團校董會 && school.法團校董會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.supervisor} value={formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名)} />
+                      {formatName(school.校監_校管會主席稱謂, school.校監_校管會主席姓名) && 
+                        (formatName(school.校長稱謂, school.校長姓名) || (school.學校管理架構 && school.學校管理架構 !== '-') || 
+                         (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') || (school.法團校董會 && school.法團校董會 !== '-') || 
                          (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
-                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
-                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.schoolBoard} value={school.法團校董會} />
-                      {(school.法團校董會 && school.法團校董會 !== '-') && 
-                        ((school.家長教師會 && school.家長教師會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
-                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
-                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.pta} value={school.家長教師會} />
-                      {(school.家長教師會 && school.家長教師會 !== '-') && 
-                        ((school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
-                         (school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
-                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.supervisorTrainingRate} value={school.校監和校董_校管會主席和成員的培訓達標率} />
-                      {(school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') &&
-                        ((school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') ||
-                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                         (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.principal} value={formatName(school.校長稱謂, school.校長姓名)} />
+                      {formatName(school.校長稱謂, school.校長姓名) && 
+                        ((school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') || 
+                         (school.法團校董會 && school.法團校董會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
                       <InfoRow label={t.managementStructure} value={school.學校管理架構} />
                       {(school.學校管理架構 && school.學校管理架構 !== '-') &&
-                        ((school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                        ((school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') || (school.法團校董會 && school.法團校董會 !== '-') || 
+                         (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
                       <InfoRow label={t.schoolBoardDetail} value={school.法團校董會_校管會_校董會} />
                       {(school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') &&
+                        ((school.法團校董會 && school.法團校董會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.schoolBoard} value={school.法團校董會} />
+                      {(school.法團校董會 && school.法團校董會 !== '-') && 
+                        ((school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
+                         (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.supervisorTrainingRate} value={school.校監和校董_校管會主席和成員的培訓達標率} />
+                      {(school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') &&
+                        ((school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
+                      <InfoRow label={t.pta} value={school.家長教師會} />
+                      {(school.家長教師會 && school.家長教師會 !== '-') && 
                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-') && <Separator />}
                       <InfoRow label={t.alumniAssociation} value={school.舊生會_校友會} />
                     </CardContent>
@@ -352,7 +347,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
             </TabsContent>
 
             <TabsContent value="philosophy" className="space-y-3">
-              {((school.校訓 && school.校訓 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-')) && (
+              {((school.校訓 && school.校訓 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-') || (school.學校發展計劃 && school.學校發展計劃 !== '-')) && (
                 <Card data-testid="card-philosophy">
                   <CardHeader>
                     <CardTitle className="text-base">{language === 'tc' ? '辦學理念' : '办学理念'}</CardTitle>
@@ -366,7 +361,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                             <p className="text-sm leading-relaxed">{convertText(school.校訓)}</p>
                           </div>
                         </div>
-                        {((school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-')) && <Separator />}
+                        {((school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-') || (school.學校發展計劃 && school.學校發展計劃 !== '-')) && <Separator />}
                       </>
                     )}
                     {school.辦學宗旨 && school.辦學宗旨 !== '-' && (
@@ -377,14 +372,25 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                             <p className="text-sm leading-relaxed">{convertText(school.辦學宗旨)}</p>
                           </div>
                         </div>
-                        {(school.校風 && school.校風 !== '-') && <Separator />}
+                        {((school.校風 && school.校風 !== '-') || (school.學校發展計劃 && school.學校發展計劃 !== '-')) && <Separator />}
                       </>
                     )}
                     {school.校風 && school.校風 !== '-' && (
+                      <>
+                        <div className="flex gap-3 py-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground mb-1">{t.schoolCulture}</p>
+                            <p className="text-sm leading-relaxed">{convertText(school.校風)}</p>
+                          </div>
+                        </div>
+                        {(school.學校發展計劃 && school.學校發展計劃 !== '-') && <Separator />}
+                      </>
+                    )}
+                    {school.學校發展計劃 && school.學校發展計劃 !== '-' && (
                       <div className="flex gap-3 py-2">
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs text-muted-foreground mb-1">{t.schoolCulture}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.校風)}</p>
+                          <p className="text-xs text-muted-foreground mb-1">{t.schoolDevelopmentPlan}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.學校發展計劃)}</p>
                         </div>
                       </div>
                     )}
@@ -532,6 +538,44 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   </Card>
                 );
               })()}
+
+              {/* Student Support Section */}
+              {(() => {
+                const hasStudentSupportData = 
+                  (school.全校參與照顧學生的多樣性 && school.全校參與照顧學生的多樣性 !== '-') ||
+                  (school.全校參與模式融合教育 && school.全校參與模式融合教育 !== '-') ||
+                  (school.非華語學生的教育支援 && school.非華語學生的教育支援 !== '-');
+
+                if (!hasStudentSupportData) return null;
+
+                return (
+                  <Card data-testid="card-student-support">
+                    <CardHeader>
+                      <CardTitle className="text-base">{language === 'tc' ? '學生支援' : '学生支援'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      {school.全校參與照顧學生的多樣性 && school.全校參與照顧學生的多樣性 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.studentDiversity}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.全校參與照顧學生的多樣性)}</p>
+                        </div>
+                      )}
+                      {school.全校參與模式融合教育 && school.全校參與模式融合教育 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.inclusiveEducation}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.全校參與模式融合教育)}</p>
+                        </div>
+                      )}
+                      {school.非華語學生的教育支援 && school.非華語學生的教育支援 !== '-' && (
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">{t.nonChineseSpeakingSupport}</p>
+                          <p className="text-sm leading-relaxed">{convertText(school.非華語學生的教育支援)}</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })()}
             </TabsContent>
 
             <TabsContent value="teaching-features" className="space-y-3">
@@ -646,44 +690,6 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                         <div>
                           <p className="text-xs text-muted-foreground mb-1">{t.curriculumAdaptation}</p>
                           <p className="text-sm leading-relaxed">{convertText(school.課程剪裁及調適措施)}</p>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })()}
-
-              {/* Student Support Section */}
-              {(() => {
-                const hasStudentSupportData = 
-                  (school.全校參與照顧學生的多樣性 && school.全校參與照顧學生的多樣性 !== '-') ||
-                  (school.全校參與模式融合教育 && school.全校參與模式融合教育 !== '-') ||
-                  (school.非華語學生的教育支援 && school.非華語學生的教育支援 !== '-');
-
-                if (!hasStudentSupportData) return null;
-
-                return (
-                  <Card data-testid="card-student-support">
-                    <CardHeader>
-                      <CardTitle className="text-base">{language === 'tc' ? '學生支援' : '学生支援'}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      {school.全校參與照顧學生的多樣性 && school.全校參與照顧學生的多樣性 !== '-' && (
-                        <div>
-                          <p className="text-xs text-muted-foreground mb-1">{t.studentDiversity}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.全校參與照顧學生的多樣性)}</p>
-                        </div>
-                      )}
-                      {school.全校參與模式融合教育 && school.全校參與模式融合教育 !== '-' && (
-                        <div>
-                          <p className="text-xs text-muted-foreground mb-1">{t.inclusiveEducation}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.全校參與模式融合教育)}</p>
-                        </div>
-                      )}
-                      {school.非華語學生的教育支援 && school.非華語學生的教育支援 !== '-' && (
-                        <div>
-                          <p className="text-xs text-muted-foreground mb-1">{t.nonChineseSpeakingSupport}</p>
-                          <p className="text-sm leading-relaxed">{convertText(school.非華語學生的教育支援)}</p>
                         </div>
                       )}
                     </CardContent>
