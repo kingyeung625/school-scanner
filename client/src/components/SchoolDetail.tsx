@@ -692,7 +692,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               })()}
             </TabsContent>
 
-            <TabsContent value="contact" className="space-y-3">
+            <TabsContent value="contact-map" className="space-y-3">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.contact}</CardTitle>
@@ -725,6 +725,44 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   )}
                 </CardContent>
               </Card>
+
+              {mapUrl ? (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">{t.location}</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {convertText(school.學校地址)}
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="w-full h-[400px] md:h-[500px] rounded-md overflow-hidden border">
+                      <iframe
+                        src={mapUrl}
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title={`Map of ${school.學校名稱}`}
+                      />
+                    </div>
+                    {!import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        {language === 'tc' ? '提示：添加 Google Maps API 金鑰可獲得更好的地圖體驗' : '提示：添加 Google Maps API 金钥可获得更好的地图体验'}
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card>
+                  <CardContent className="py-12 text-center">
+                    <p className="text-muted-foreground">
+                      {language === 'tc' ? '暫無地址資料' : '暂无地址资料'}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="facilities" className="space-y-3">
@@ -983,46 +1021,6 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                   </Table>
                 </CardContent>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="map" className="space-y-3">
-              {mapUrl ? (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">{t.location}</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {convertText(school.學校地址)}
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="w-full h-[400px] md:h-[500px] rounded-md overflow-hidden border">
-                      <iframe
-                        src={mapUrl}
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title={`Map of ${school.學校名稱}`}
-                      />
-                    </div>
-                    {!import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
-                      <p className="text-xs text-muted-foreground mt-2">
-                        {language === 'tc' ? '提示：添加 Google Maps API 金鑰可獲得更好的地圖體驗' : '提示：添加 Google Maps API 金钥可获得更好的地图体验'}
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              ) : (
-                <Card>
-                  <CardContent className="py-12 text-center">
-                    <p className="text-muted-foreground">
-                      {language === 'tc' ? '暫無地址資料' : '暂无地址资料'}
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
             </TabsContent>
           </Tabs>
         </div>
