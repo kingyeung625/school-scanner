@@ -175,7 +175,6 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
               <AccordionContent>
                 <div className="border-t">
                   <ComparisonRow label={t.tuition} getValue={(s) => s.學費} />
-                  <ComparisonRow label={t.ptaFee} getValue={(s) => s.家長教師會費} />
                   <ComparisonRow label={t.tuitionReduction} getValue={(s) => s.學費減免} />
                 </div>
               </AccordionContent>
@@ -221,6 +220,8 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                   <ComparisonRow label={t.p1AlternativeAssessment} getValue={(s) => s.小一上學期以多元化的進展性評估代替測驗及考試} />
                   <ComparisonRow label={t.testCountYear2to6} getValue={(s) => s.全年全科測驗次數_二至六年級} />
                   <ComparisonRow label={t.examCountYear2to6} getValue={(s) => s.全年全科考試次數_二至六年級} />
+                  <ComparisonRow label={t.homeworkPolicyParents} getValue={(s) => s.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見} />
+                  <ComparisonRow label={t.assessmentPolicyOnline} getValue={(s) => s.將校本評估政策上載至學校網頁_讓公眾及持份者知悉} />
                   <ComparisonRow label={t.diverseLearningAssessment} getValue={(s) => s.多元學習評估} />
                   <ComparisonRow label={t.avoidTestAfterHoliday} getValue={(s) => s.避免緊接在長假期後安排測考_讓學生在假期有充分的休息} />
                   <ComparisonRow label={t.afternoonHomeworkTime} getValue={(s) => s.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課} />
