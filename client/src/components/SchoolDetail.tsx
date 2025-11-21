@@ -961,6 +961,24 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                           {convertText(school.非標準項目的核准收費 && school.非標準項目的核准收費 !== '-' ? school.非標準項目的核准收費 : t.noData)}
                         </TableCell>
                       </TableRow>
+                      <TableRow>
+                        <TableCell className="text-sm">{t.hallFee}</TableCell>
+                        <TableCell className="text-sm text-right">
+                          {convertText(school.堂費 && school.堂費 !== '-' ? school.堂費 : t.noData)}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-sm">{t.otherFees}</TableCell>
+                        <TableCell className="text-sm text-right">
+                          {convertText(school.其他收費_費用 && school.其他收費_費用 !== '-' ? school.其他收費_費用 : t.noData)}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-sm">{t.tuitionReduction}</TableCell>
+                        <TableCell className="text-sm text-right">
+                          {convertText(school.學費減免 && school.學費減免 !== '-' ? school.學費減免 : t.noData)}
+                        </TableCell>
+                      </TableRow>
                     </TableBody>
                   </Table>
                 </CardContent>
