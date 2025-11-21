@@ -443,19 +443,19 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                             {school.班級教學模式 && school.班級教學模式 !== '-' && (
                               <div data-testid="text-class-teaching-mode">
                                 <p className="text-xs text-muted-foreground mb-1">{t.classTeachingMode}</p>
-                                <p className="text-sm leading-relaxed">{convertText(school.班級教學模式)}</p>
+                                <HtmlContent content={school.班級教學模式} />
                               </div>
                             )}
                             {school.班級結構備註 && school.班級結構備註 !== '-' && (
                               <div data-testid="text-class-structure-remarks">
                                 <p className="text-xs text-muted-foreground mb-1">{t.classStructureRemarks}</p>
-                                <p className="text-sm leading-relaxed">{convertText(school.班級結構備註)}</p>
+                                <HtmlContent content={school.班級結構備註} />
                               </div>
                             )}
                             {school.分班安排 && school.分班安排 !== '-' && (
                               <div data-testid="text-class-arrangement">
                                 <p className="text-xs text-muted-foreground mb-1">{t.classArrangement}</p>
-                                <p className="text-sm leading-relaxed">{convertText(school.分班安排)}</p>
+                                <HtmlContent content={school.分班安排} />
                               </div>
                             )}
                           </div>
