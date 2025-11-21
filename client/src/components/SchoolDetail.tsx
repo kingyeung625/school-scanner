@@ -185,7 +185,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               <TabsTrigger value="contact" data-testid="tab-contact" className="text-xs">{t.contactAndLocation}</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="basic" className="space-y-3">
+            <TabsContent value="basic" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.schoolInfo}</CardTitle>
@@ -356,7 +356,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="philosophy" className="space-y-3">
+            <TabsContent value="philosophy" className="space-y-3 pt-4">
               {((school.校訓 && school.校訓 !== '-') || (school.辦學宗旨 && school.辦學宗旨 !== '-') || (school.校風 && school.校風 !== '-') || (school.學校發展計劃 && school.學校發展計劃 !== '-')) && (
                 <Card data-testid="card-philosophy">
                   <CardHeader>
@@ -409,7 +409,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="homework" className="space-y-3">
+            <TabsContent value="homework" className="space-y-3 pt-4">
               {(() => {
                 const hasHomeworkData = 
                   (school.班級教學模式 && school.班級教學模式 !== '-') ||
@@ -588,7 +588,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               })()}
             </TabsContent>
 
-            <TabsContent value="teaching-features" className="space-y-3">
+            <TabsContent value="teaching-features" className="space-y-3 pt-4">
               {/* School Life & Activities Section */}
               {(() => {
                 const hasSchoolLifeData = 
@@ -708,7 +708,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               })()}
             </TabsContent>
 
-            <TabsContent value="contact" className="space-y-3">
+            <TabsContent value="contact" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.contact}</CardTitle>
@@ -781,7 +781,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="facilities" className="space-y-3">
+            <TabsContent value="facilities" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.facilities}</CardTitle>
@@ -858,7 +858,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               </Card>
             </TabsContent>
 
-            <TabsContent value="classes" className="space-y-3">
+            <TabsContent value="classes" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.classDistribution}</CardTitle>
@@ -906,7 +906,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               </Card>
             </TabsContent>
 
-            <TabsContent value="teachers" className="space-y-3">
+            <TabsContent value="teachers" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.teachers}</CardTitle>
@@ -983,7 +983,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="fees" className="space-y-3">
+            <TabsContent value="fees" className="space-y-3 pt-4">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">{t.fees}</CardTitle>
