@@ -250,18 +250,17 @@ export default function Home() {
               <SheetTrigger asChild>
                 <Button
                   variant="outline"
-                  size="icon"
-                  className="md:hidden"
+                  className="md:hidden gap-2"
                   data-testid="button-mobile-filters"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
+                  <span>{language === 'tc' ? '篩選' : '筛选'}</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="p-0 w-[300px]">
                 <FilterSidebar
                   filters={filters}
                   onFilterChange={setFilters}
-                  onClose={() => setMobileFiltersOpen(false)}
                 />
               </SheetContent>
             </Sheet>
