@@ -18,12 +18,26 @@ import logoImage from '@/assets/01-logo.jpg';
 
 // Popular feature tags based on CSV data analysis
 // Note: For bilingual tags (e.g., "愉快/Happy School"), the part before "/" is used for searching
-const POPULAR_TAGS = ['STEAM', '閱讀', '電子學習', '自主學習', '全方位學習', '音樂', '創意', '跨學科', '愉快/Happy School', '藝術', '兩文三語/英語教育'];
+const POPULAR_TAGS = [
+  'STEAM',
+  'AI/人工智能',
+  '愉快/Happy School',
+  '關愛',
+  '兩文三語/英語教育',
+  '中華文化',
+  '電子學習',
+  '創意',
+  '自主學習',
+  '音樂',
+  '體育',
+  '藝術'
+];
 
 // Tag keyword mapping - defines which keywords to search for each tag
 // Most tags search for themselves, but some tags search for multiple keywords (OR logic)
 const TAG_KEYWORDS: Record<string, string[]> = {
   '兩文三語/英語教育': ['兩文三語', '英語學習', '英語活動'],
+  'AI/人工智能': ['AI', '人工智能'],
   // All other tags search for themselves (extracted before "/" for bilingual tags)
 };
 
