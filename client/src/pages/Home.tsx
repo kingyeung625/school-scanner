@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Menu, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import LanguageToggle from '@/components/LanguageToggle';
 import SearchBar from '@/components/SearchBar';
@@ -14,6 +15,9 @@ import { convertToSimplified } from '@/lib/i18n';
 import { loadSchools } from '@/lib/csvParser';
 import type { FilterState, School } from '@shared/school-schema';
 import logoImage from '@/assets/01-logo.jpg';
+
+// Popular feature tags based on CSV data analysis
+const POPULAR_TAGS = ['STEAM', '閱讀', '電子學習', '自主學習', '全方位學習', '音樂', '創意', '跨學科'];
 
 export default function Home() {
   const { t, convertText, language } = useLanguage();
@@ -30,6 +34,8 @@ export default function Home() {
     searchQuery: '',
   });
   const [searchQuery, setSearchQuery] = useState('');
+  const [featureSearchQuery, setFeatureSearchQuery] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedSchools, setSelectedSchools] = useState<School[]>([]);
   const [detailSchool, setDetailSchool] = useState<School | null>(null);
   const [showComparison, setShowComparison] = useState(false);
@@ -46,23 +52,51 @@ export default function Home() {
   // Filter schools based on search and filter criteria
   const filteredSchools = useMemo(() => {
     return allSchools.filter((school) => {
-      // Search in school name AND special features (bidirectional TC/SC matching)
+      // Helper to normalize and lowercase any text for matching
+      const normalizeAndLower = (text: string) => {
+        if (!text) return '';
+        return convertToSimplified(text).toLowerCase();
+      };
+
+      // Search by school name only (bidirectional TC/SC matching)
       if (searchQuery) {
-        // Normalize to Simplified Chinese for language-agnostic comparison
-        // This allows TC users to search with SC characters and vice versa
         const query = convertToSimplified(searchQuery).toLowerCase();
-        
-        // Helper to normalize and lowercase any text for matching
-        const normalizeAndLower = (text: string) => {
-          if (!text) return '';
-          return convertToSimplified(text).toLowerCase();
-        };
-        
         const nameMatch = normalizeAndLower(school.學校名稱).includes(query);
-        const featuresMatch = school.特別室 ? normalizeAndLower(school.特別室).includes(query) : false;
-        const facilitiesMatch = school.其他學校設施 ? normalizeAndLower(school.其他學校設施).includes(query) : false;
         
-        if (!nameMatch && !featuresMatch && !facilitiesMatch) {
+        if (!nameMatch) {
+          return false;
+        }
+      }
+
+      // Feature search in 3 specific fields: 辦學宗旨, 學習和教學策略, 學校特色_其他
+      if (featureSearchQuery) {
+        const query = convertToSimplified(featureSearchQuery).toLowerCase();
+        
+        const philosophyMatch = school.辦學宗旨 ? normalizeAndLower(school.辦學宗旨).includes(query) : false;
+        const teachingStrategyMatch = school.學習和教學策略 ? normalizeAndLower(school.學習和教學策略).includes(query) : false;
+        const schoolFeaturesMatch = school.學校特色_其他 ? normalizeAndLower(school.學校特色_其他).includes(query) : false;
+        
+        if (!philosophyMatch && !teachingStrategyMatch && !schoolFeaturesMatch) {
+          return false;
+        }
+      }
+
+      // Tag-based filtering
+      if (selectedTags.length > 0) {
+        const combinedText = [
+          school.辦學宗旨 || '',
+          school.學習和教學策略 || '',
+          school.學校特色_其他 || ''
+        ].join(' ');
+        
+        const normalizedCombined = normalizeAndLower(combinedText);
+        
+        // Check if ALL selected tags are present in the combined text
+        const hasAllTags = selectedTags.every(tag => 
+          normalizedCombined.includes(normalizeAndLower(tag))
+        );
+        
+        if (!hasAllTags) {
           return false;
         }
       }
@@ -125,7 +159,7 @@ export default function Home() {
       
       return true;
     });
-  }, [allSchools, filters, searchQuery, language]);
+  }, [allSchools, filters, searchQuery, featureSearchQuery, selectedTags, language]);
 
   const handleToggleSelect = (school: School) => {
     setSelectedSchools(prev => {
@@ -149,6 +183,14 @@ export default function Home() {
 
   const handleRemoveFromComparison = (school: School) => {
     setSelectedSchools(prev => prev.filter(s => s.id !== school.id));
+  };
+
+  const handleToggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
   };
 
   if (showComparison) {
@@ -206,8 +248,32 @@ export default function Home() {
             <LanguageToggle />
           </div>
           
-          <div className="max-w-2xl">
-            <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          <div className="max-w-2xl space-y-3">
+            <SearchBar 
+              value={searchQuery} 
+              onChange={setSearchQuery}
+              placeholder={language === 'tc' ? '搜索學校名稱...' : '搜索学校名称...'}
+              data-testid="input-search-name"
+            />
+            <SearchBar 
+              value={featureSearchQuery} 
+              onChange={setFeatureSearchQuery}
+              placeholder={language === 'tc' ? '搜索學校特色或設施...' : '搜索学校特色或设施...'}
+              data-testid="input-search-features"
+            />
+            <div className="flex flex-wrap gap-2">
+              {POPULAR_TAGS.map(tag => (
+                <Badge
+                  key={tag}
+                  variant={selectedTags.includes(tag) ? "default" : "outline"}
+                  className="cursor-pointer hover-elevate active-elevate-2"
+                  onClick={() => handleToggleTag(tag)}
+                  data-testid={`tag-${tag}`}
+                >
+                  {convertText(tag)}
+                </Badge>
+              ))}
+            </div>
           </div>
         </div>
       </header>

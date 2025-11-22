@@ -5,9 +5,11 @@ import { useLanguage } from '@/contexts/LanguageContext';
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
+  'data-testid'?: string;
 }
 
-export default function SearchBar({ value, onChange }: SearchBarProps) {
+export default function SearchBar({ value, onChange, placeholder, 'data-testid': testId }: SearchBarProps) {
   const { t } = useLanguage();
 
   return (
@@ -15,11 +17,11 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
       <Input
         type="search"
-        placeholder={t.searchPlaceholder}
+        placeholder={placeholder || t.searchPlaceholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="pl-10 h-12"
-        data-testid="input-search"
+        data-testid={testId || "input-search"}
       />
     </div>
   );
