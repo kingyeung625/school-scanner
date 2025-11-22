@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Fragment } from 'react';
 import { Menu, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,7 @@ import SchoolListItem from '@/components/SchoolListItem';
 import ComparisonBar from '@/components/ComparisonBar';
 import SchoolDetail from '@/components/SchoolDetail';
 import ComparisonView from '@/components/ComparisonView';
+import AdBanner from '@/components/AdBanner';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { convertToSimplified } from '@/lib/i18n';
 import { loadSchools } from '@/lib/csvParser';
@@ -338,14 +339,21 @@ export default function Home() {
               </div>
             ) : (
               <div className="border rounded-md overflow-hidden">
-                {filteredSchools.map((school) => (
-                  <SchoolListItem
-                    key={school.id}
-                    school={school}
-                    onViewDetails={handleViewDetails}
-                    isSelected={selectedSchools.some(s => s.id === school.id)}
-                    onToggleSelect={handleToggleSelect}
-                  />
+                {filteredSchools.map((school, index) => (
+                  <Fragment key={school.id}>
+                    <SchoolListItem
+                      school={school}
+                      onViewDetails={handleViewDetails}
+                      isSelected={selectedSchools.some(s => s.id === school.id)}
+                      onToggleSelect={handleToggleSelect}
+                    />
+                    {/* Insert ad after every 10th school */}
+                    {(index + 1) % 10 === 0 && index < filteredSchools.length - 1 && (
+                      <div className="border-t p-4 flex justify-center bg-muted/20">
+                        <AdBanner />
+                      </div>
+                    )}
+                  </Fragment>
                 ))}
               </div>
             )}

@@ -10,6 +10,7 @@ import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Toolti
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { School } from '@shared/school-schema';
 import ArticleCarousel from './ArticleCarousel';
+import AdBanner from './AdBanner';
 
 interface SchoolDetailProps {
   school: School;
@@ -189,6 +190,11 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
               <TabsTrigger value="fees" data-testid="tab-fees" className="text-xs">{t.fees}</TabsTrigger>
               <TabsTrigger value="contact" data-testid="tab-contact" className="text-xs">{t.contactAndLocation}</TabsTrigger>
             </TabsList>
+
+            {/* Ad banner below tab navigation */}
+            <div className="flex justify-center mb-6">
+              <AdBanner />
+            </div>
 
             <TabsContent value="basic" className="space-y-3 pt-4">
               <Card>

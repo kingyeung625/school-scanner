@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { School } from '@shared/school-schema';
+import AdBanner from './AdBanner';
 
 interface ComparisonViewProps {
   schools: School[];
@@ -277,6 +278,11 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+
+          {/* Ad banner at bottom of comparison */}
+          <div className="flex justify-center mt-8 mb-4">
+            <AdBanner />
+          </div>
         </div>
       </ScrollArea>
 
