@@ -58,6 +58,11 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
     );
   };
 
+  // Helper: Check if value is affirmative (yes)
+  const isAffirmative = (value?: string): boolean => {
+    return value === '是' || value === '有';
+  };
+
   // Helper: Render HTML content safely
   const HtmlContent = ({ content }: { content: string }) => {
     return (
@@ -463,7 +468,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                             (school.全年全科考試次數_一年級 && school.全年全科考試次數_一年級 !== '-') ||
                             (school.全年全科測驗次數_二至六年級 && school.全年全科測驗次數_二至六年級 !== '-') ||
                             (school.全年全科考試次數_二至六年級 && school.全年全科考試次數_二至六年級 !== '-') ||
-                            (school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是')) && <Separator />}
+                            isAffirmative(school.小一上學期以多元化的進展性評估代替測驗及考試)) && <Separator />}
                         </>
                       )}
 
@@ -504,25 +509,25 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                               </TableBody>
                             </Table>
                           </div>
-                          {(school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && <Separator />}
+                          {isAffirmative(school.小一上學期以多元化的進展性評估代替測驗及考試) && <Separator />}
                         </>
                       )}
 
-                      {(school.小一上學期以多元化的進展性評估代替測驗及考試 && school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && (
+                      {isAffirmative(school.小一上學期以多元化的進展性評估代替測驗及考試) && (
                         <div className="flex items-start gap-2" data-testid="badge-policy-p1-alternative">
                           <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
                           <p className="text-sm leading-relaxed">{convertText(t.p1AlternativeAssessment)}</p>
                         </div>
                       )}
 
-                      {(school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 && school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 === '是') && (
+                      {isAffirmative(school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉) && (
                         <div className="flex items-start gap-2" data-testid="badge-policy-assessment-online">
                           <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
                           <p className="text-sm leading-relaxed">{convertText(t.assessmentPolicyOnline)}</p>
                         </div>
                       )}
 
-                      {(school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 && school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 === '是') && (
+                      {isAffirmative(school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息) && (
                         <div className="flex items-start gap-2" data-testid="badge-policy-avoid-test-holiday">
                           <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
                           <p className="text-sm leading-relaxed">{convertText(t.avoidTestAfterHoliday)}</p>
@@ -535,15 +540,15 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                           { key: 'diverse-assessment', field: school.多元學習評估, label: t.diverseLearningAssessment },
                           { key: 'homework-parents', field: school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見, label: t.homeworkPolicyParents },
                           { key: 'homework-online', field: school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉, label: t.homeworkPolicyOnline },
-                        ].filter(item => item.field === '是');
+                        ].filter(item => isAffirmative(item.field));
 
                         if (policyItems.length === 0) return null;
 
                         return (
                           <>
-                            {((school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') || 
-                              (school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 === '是') ||
-                              (school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 === '是')) && <Separator />}
+                            {(isAffirmative(school.小一上學期以多元化的進展性評估代替測驗及考試) || 
+                              isAffirmative(school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉) ||
+                              isAffirmative(school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息)) && <Separator />}
                             <div className="space-y-2">
                               <p className="text-xs text-muted-foreground">{language === 'tc' ? '教學政策' : '教学政策'}</p>
                               <div className="space-y-2">
