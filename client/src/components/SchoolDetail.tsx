@@ -515,21 +515,35 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                         </div>
                       )}
 
+                      {(school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 && school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 === '是') && (
+                        <div className="flex items-start gap-2" data-testid="badge-policy-assessment-online">
+                          <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                          <p className="text-sm leading-relaxed">{convertText(t.assessmentPolicyOnline)}</p>
+                        </div>
+                      )}
+
+                      {(school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 && school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 === '是') && (
+                        <div className="flex items-start gap-2" data-testid="badge-policy-avoid-test-holiday">
+                          <Check className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                          <p className="text-sm leading-relaxed">{convertText(t.avoidTestAfterHoliday)}</p>
+                        </div>
+                      )}
+
                       {(() => {
                         const policyItems = [
-                          { key: 'homework-parents', field: school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見, label: t.homeworkPolicyParents },
-                          { key: 'assessment-online', field: school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉, label: t.assessmentPolicyOnline },
-                          { key: 'homework-online', field: school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉, label: t.homeworkPolicyOnline },
-                          { key: 'diverse-assessment', field: school.多元學習評估, label: t.diverseLearningAssessment },
-                          { key: 'avoid-test-holiday', field: school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息, label: t.avoidTestAfterHoliday },
                           { key: 'afternoon-homework', field: school.按校情靈活編排時間表_盡量在下午安排導修時段_讓學生能在教師指導下完成部分家課, label: t.afternoonHomeworkTime },
+                          { key: 'diverse-assessment', field: school.多元學習評估, label: t.diverseLearningAssessment },
+                          { key: 'homework-parents', field: school.制定適切的校本課業政策_讓家長了解相關安排_並定期蒐集教師_學生和家長的意見, label: t.homeworkPolicyParents },
+                          { key: 'homework-online', field: school.將校本課業政策上載至學校網頁_讓公眾及持份者知悉, label: t.homeworkPolicyOnline },
                         ].filter(item => item.field === '是');
 
                         if (policyItems.length === 0) return null;
 
                         return (
                           <>
-                            {(school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') && <Separator />}
+                            {((school.小一上學期以多元化的進展性評估代替測驗及考試 === '是') || 
+                              (school.將校本評估政策上載至學校網頁_讓公眾及持份者知悉 === '是') ||
+                              (school.避免緊接在長假期後安排測考_讓學生在假期有充分的休息 === '是')) && <Separator />}
                             <div className="space-y-2">
                               <p className="text-xs text-muted-foreground">{language === 'tc' ? '教學政策' : '教学政策'}</p>
                               <div className="space-y-2">
