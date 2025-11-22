@@ -17,7 +17,7 @@ import type { FilterState, School } from '@shared/school-schema';
 import logoImage from '@/assets/01-logo.jpg';
 
 // Popular feature tags based on CSV data analysis
-const POPULAR_TAGS = ['STEAM', '閱讀', '電子學習', '自主學習', '全方位學習', '音樂', '創意', '跨學科'];
+const POPULAR_TAGS = ['STEAM', '閱讀', '電子學習', '自主學習', '全方位學習', '音樂', '創意', '跨學科', '愉快學習/Happy School'];
 
 export default function Home() {
   const { t, convertText, language } = useLanguage();
