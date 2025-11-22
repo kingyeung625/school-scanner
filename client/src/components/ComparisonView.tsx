@@ -54,9 +54,10 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 key={school.id}
                 className={`p-4 ${index !== schools.length - 1 ? 'border-b md:border-b-0 md:border-r' : ''}`}
               >
-                <p className="text-sm leading-relaxed">
-                  {value ? convertText(value) : '-'}
-                </p>
+                <div 
+                  className="text-sm leading-relaxed [&_br]:block [&_br]:my-1"
+                  dangerouslySetInnerHTML={{ __html: value ? convertText(value) : '-' }}
+                />
               </div>
             );
           })}
