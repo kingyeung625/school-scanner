@@ -338,24 +338,31 @@ export default function Home() {
                 <p className="text-muted-foreground">{t.noSchoolsDesc}</p>
               </div>
             ) : (
-              <div className="border rounded-md overflow-hidden">
-                {filteredSchools.map((school, index) => (
-                  <Fragment key={school.id}>
-                    <SchoolListItem
-                      school={school}
-                      onViewDetails={handleViewDetails}
-                      isSelected={selectedSchools.some(s => s.id === school.id)}
-                      onToggleSelect={handleToggleSelect}
-                    />
-                    {/* Insert ad after every 10th school */}
-                    {(index + 1) % 10 === 0 && index < filteredSchools.length - 1 && (
-                      <div className="border-t p-4 flex justify-center bg-muted/20">
-                        <AdBanner />
-                      </div>
-                    )}
-                  </Fragment>
-                ))}
-              </div>
+              <>
+                {/* Ad banner before first school */}
+                <div className="mb-6 flex justify-center">
+                  <AdBanner />
+                </div>
+                
+                <div className="border rounded-md overflow-hidden">
+                  {filteredSchools.map((school, index) => (
+                    <Fragment key={school.id}>
+                      <SchoolListItem
+                        school={school}
+                        onViewDetails={handleViewDetails}
+                        isSelected={selectedSchools.some(s => s.id === school.id)}
+                        onToggleSelect={handleToggleSelect}
+                      />
+                      {/* Insert ad after every 10th school */}
+                      {(index + 1) % 10 === 0 && index < filteredSchools.length - 1 && (
+                        <div className="border-t p-4 flex justify-center bg-muted/20">
+                          <AdBanner />
+                        </div>
+                      )}
+                    </Fragment>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </main>

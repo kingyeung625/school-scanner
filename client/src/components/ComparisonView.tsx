@@ -126,6 +126,11 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
             </div>
           </div>
 
+          {/* Ad banner before first accordion */}
+          <div className="flex justify-center mb-6">
+            <AdBanner />
+          </div>
+
           <Accordion type="multiple" className="space-y-4">
             {/* Section 1: Basic Information */}
             <AccordionItem value="basic-info" className="border rounded-md px-4">
@@ -182,6 +187,11 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
               </AccordionContent>
             </AccordionItem>
 
+            {/* Ad banner after section 3 */}
+            <div className="flex justify-center my-6">
+              <AdBanner />
+            </div>
+
             {/* Section 4: Philosophy */}
             <AccordionItem value="philosophy" className="border rounded-md px-4">
               <AccordionTrigger className="text-lg font-semibold" data-testid="accordion-philosophy">
@@ -230,6 +240,11 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 </div>
               </AccordionContent>
             </AccordionItem>
+
+            {/* Ad banner after section 6 */}
+            <div className="flex justify-center my-6">
+              <AdBanner />
+            </div>
 
             {/* Section 7: Curriculum Development */}
             <AccordionItem value="curriculum" className="border rounded-md px-4">
