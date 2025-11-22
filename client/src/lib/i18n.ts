@@ -9,7 +9,7 @@ const converter = OpenCC.Converter({ from: 'hk', to: 'cn' });
 export const translations = {
   tc: {
     // Header
-    appTitle: '香港小學資料庫',
+    appTitle: '「01教育」小學選校器',
     searchPlaceholder: '搜索學校名稱或特色設施...',
     
     // Language toggle
@@ -227,7 +227,7 @@ export const translations = {
   },
   sc: {
     // Header
-    appTitle: '香港小学资料库',
+    appTitle: '「01教育」小学选校器',
     searchPlaceholder: '搜索学校名称或特色设施...',
     
     // Language toggle

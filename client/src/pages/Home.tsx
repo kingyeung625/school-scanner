@@ -13,6 +13,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { convertToSimplified } from '@/lib/i18n';
 import { loadSchools } from '@/lib/csvParser';
 import type { FilterState, School } from '@shared/school-schema';
+import logoImage from '@/assets/01-logo.jpg';
 
 export default function Home() {
   const { t, convertText, language } = useLanguage();
@@ -190,9 +191,17 @@ export default function Home() {
               </SheetContent>
             </Sheet>
             
-            <h1 className="text-2xl md:text-3xl font-semibold flex-1" data-testid="text-app-title">
-              {t.appTitle}
-            </h1>
+            <div className="flex items-center gap-3 flex-1">
+              <img 
+                src={logoImage} 
+                alt="01教育 Logo" 
+                className="h-10 md:h-12 w-auto"
+                data-testid="img-logo"
+              />
+              <h1 className="text-2xl md:text-3xl font-semibold" data-testid="text-app-title">
+                {t.appTitle}
+              </h1>
+            </div>
             
             <LanguageToggle />
           </div>
