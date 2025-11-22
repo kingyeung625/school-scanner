@@ -17,6 +17,7 @@ import type { FilterState, School } from '@shared/school-schema';
 import logoImage from '@/assets/01-logo.jpg';
 
 // Popular feature tags based on CSV data analysis
+// Note: For bilingual tags (e.g., "愉快學習/Happy School"), the part before "/" is used for searching
 const POPULAR_TAGS = ['STEAM', '閱讀', '電子學習', '自主學習', '全方位學習', '音樂', '創意', '跨學科', '愉快學習/Happy School'];
 
 export default function Home() {
@@ -92,9 +93,11 @@ export default function Home() {
         const normalizedCombined = normalizeAndLower(combinedText);
         
         // Check if ALL selected tags are present in the combined text
-        const hasAllTags = selectedTags.every(tag => 
-          normalizedCombined.includes(normalizeAndLower(tag))
-        );
+        // Extract Chinese part before "/" for bilingual tags like "愉快學習/Happy School"
+        const hasAllTags = selectedTags.every(tag => {
+          const searchTerm = tag.includes('/') ? tag.split('/')[0].trim() : tag;
+          return normalizedCombined.includes(normalizeAndLower(searchTerm));
+        });
         
         if (!hasAllTags) {
           return false;
