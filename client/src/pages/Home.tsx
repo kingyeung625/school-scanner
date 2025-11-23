@@ -54,6 +54,7 @@ export default function Home() {
     宗教: [],
     教學語言: [],
     關聯學校: [],
+    辦學團體: [],
     searchQuery: '',
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -186,6 +187,23 @@ export default function Home() {
         }
         
         if (!hasLinkedSchool) {
+          return false;
+        }
+      }
+      
+      // Filter by sponsoring body (辦學團體)
+      if (filters.辦學團體.length > 0) {
+        // Treat empty strings, dashes, and other placeholders as missing data
+        const sponsoringBody = school.辦學團體?.trim();
+        if (!sponsoringBody || sponsoringBody === '-' || sponsoringBody === '—' || sponsoringBody === '－') {
+          return false;
+        }
+        
+        // Handle multiple sponsoring bodies separated by comma or 、
+        const bodies = sponsoringBody.split(/[,、]/).map(b => b.trim());
+        const hasMatch = bodies.some(body => filters.辦學團體.includes(body));
+        
+        if (!hasMatch) {
           return false;
         }
       }

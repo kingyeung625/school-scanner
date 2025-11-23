@@ -139,6 +139,7 @@ export interface FilterState {
   宗教: string[];
   教學語言: string[];
   關聯學校: string[];
+  辦學團體: string[];
   searchQuery: string;
 }
 

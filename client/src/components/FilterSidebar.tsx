@@ -20,9 +20,10 @@ const filterOptions = {
   校網: ['11', '12', '14', '16', '18', '31', '32', '34', '35', '40', '41', '43', '45', '46', '48', '62', '65', '66', '70', '72', '74', '80', '81', '83', '84', '88', '89', '91', '95', '97', '98'],
   資助類型: ['資助', '官立', '私立', '直資'],
   學生性別: ['男女', '男', '女'],
-  宗教: ['基督教', '天主教', '佛教', '不適用'],
+  宗教: ['基督教', '天主教', '佛教', '道教', '伊斯蘭教', '不適用'],
   教學語言: ['中文', '中文及英文', '中文（包括：普通話）', '中文（包括：普通話）及英文'],
   關聯學校: ['一條龍', '直屬', '聯繫'],
+  辦學團體: ['天主教香港教區', '聖公宗（香港）小學監理委員會有限公司', '政府', '保良局', '中華基督教會香港區會', '東華三院', '嘉諾撒仁愛女修會', '基督教香港信義會', '香港佛教聯合會', '耶穌寶血女修會', '鮑思高慈幼會', '香港浸信會聯會', '香港九龍塘基督教中華宣道會', '香港道教聯合會', '香港路德會有限公司', '香港基督教循道衞理聯合教會', '順德聯誼總會', '救世軍', '仁濟醫院', '九龍樂善堂', '香海正覺蓮社', '基督教香港崇真會', '嗇色園', '鳳溪公立學校', '香港天主教方濟會會長', '香港喇沙修士會', '香港五邑工商總會', '青松觀有限公司', '無玷聖母獻主會', '港澳信義會有限公司'],
 };
 
 export default function FilterSidebar({ filters, onFilterChange, onClose }: FilterSidebarProps) {
@@ -33,11 +34,13 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
     宗教: false,
     教學語言: false,
     關聯學校: false,
+    辦學團體: false,
   });
 
   const [searchTerms, setSearchTerms] = useState<Record<string, string>>({
     區域: '',
     校網: '',
+    辦學團體: '',
   });
 
   const toggleSection = (section: string) => {
@@ -70,6 +73,7 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
       宗教: [],
       教學語言: [],
       關聯學校: [],
+      辦學團體: [],
       searchQuery: '',
     });
   };
@@ -181,6 +185,30 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
     );
   };
 
+  const renderSponsoringBodyFilter = () => {
+    const searchTerm = searchTerms['辦學團體'] || '';
+    const filteredBodies = filterOptionsBySearch(filterOptions['辦學團體'], searchTerm);
+
+    return (
+      <>
+        <div className="mb-2">
+          <div className="relative">
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder={language === 'tc' ? '搜尋辦學團體...' : '搜索办学团体...'}
+              value={searchTerm}
+              onChange={(e) => setSearchTerms(prev => ({ ...prev, '辦學團體': e.target.value }))}
+              className="h-7 pl-7 text-xs"
+              data-testid="input-search-sponsoring-body"
+            />
+          </div>
+        </div>
+        {renderCheckboxGrid('辦學團體', filteredBodies)}
+      </>
+    );
+  };
+
   const activeChips = getActiveFilterChips();
 
   return (
@@ -263,6 +291,22 @@ export default function FilterSidebar({ filters, onFilterChange, onClose }: Filt
               </CollapsibleContent>
             </Collapsible>
           ))}
+
+          {/* 辦學團體 filter with collapsible and search */}
+          <Collapsible
+            open={openSections['辦學團體']}
+            onOpenChange={() => toggleSection('辦學團體')}
+          >
+            <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1.5 hover-elevate active-elevate-2 rounded-md" data-testid="button-toggle-辦學團體">
+              <span className="font-medium text-xs">
+                {t.sponsoringBody}
+              </span>
+              <ChevronDown className={`h-3 w-3 transition-transform ${openSections['辦學團體'] ? 'rotate-180' : ''}`} />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-2 space-y-1.5 pl-2">
+              {renderSponsoringBodyFilter()}
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
 
