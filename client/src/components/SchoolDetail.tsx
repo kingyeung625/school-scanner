@@ -1065,6 +1065,13 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
             </TabsContent>
           </Tabs>
         </div>
+        
+        {/* Disclaimer footer */}
+        <div className="px-6 py-4 border-t bg-muted/20 text-center">
+          <p className="text-xs text-muted-foreground">
+            {convertText('以上資料取自《小學概覽》2025，只供參考，所有資訊應以學校官方公布作準')}
+          </p>
+        </div>
       </ScrollArea>
     </div>
   );

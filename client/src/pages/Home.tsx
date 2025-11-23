@@ -363,6 +363,13 @@ export default function Home() {
                 </div>
               </>
             )}
+            
+            {/* Disclaimer footer */}
+            <div className="mt-8 pt-4 border-t text-center">
+              <p className="text-xs text-muted-foreground">
+                {convertText('以上資料取自《小學概覽》2025，只供參考，所有資訊應以學校官方公布作準')}
+              </p>
+            </div>
           </div>
         </main>
       </div>
