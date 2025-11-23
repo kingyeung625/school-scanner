@@ -45,7 +45,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
     return `${name}${title}`;
   };
 
-  const InfoRow = ({ label, value, icon: Icon }: { label: string; value?: string; icon?: any }) => {
+  const InfoRow = ({ label, value, icon: Icon, isHtml }: { label: string; value?: string; icon?: any; isHtml?: boolean }) => {
     if (!value || value === '-') return null;
     
     return (
@@ -53,7 +53,14 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
         {Icon && <Icon className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />}
         <div className="flex-1 min-w-0">
           <p className="text-xs text-muted-foreground mb-1">{label}</p>
-          <p className="text-sm leading-relaxed">{convertText(value)}</p>
+          {isHtml ? (
+            <div 
+              className="text-sm leading-relaxed [&_br]:block [&_br]:my-1"
+              dangerouslySetInnerHTML={{ __html: convertText(value) }}
+            />
+          ) : (
+            <p className="text-sm leading-relaxed">{convertText(value)}</p>
+          )}
         </div>
       </div>
     );
@@ -258,26 +265,26 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                         ((school.學校管理架構 && school.學校管理架構 !== '-') || (school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') || 
                          (school.法團校董會 && school.法團校董會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
                          (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.managementStructure} value={school.學校管理架構} />
+                      <InfoRow label={t.managementStructure} value={school.學校管理架構} isHtml={true} />
                       {(school.學校管理架構 && school.學校管理架構 !== '-') &&
                         ((school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') || (school.法團校董會 && school.法團校董會 !== '-') || 
                          (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
                          (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.schoolBoardDetail} value={school.法團校董會_校管會_校董會} />
+                      <InfoRow label={t.schoolBoardDetail} value={school.法團校董會_校管會_校董會} isHtml={true} />
                       {(school.法團校董會_校管會_校董會 && school.法團校董會_校管會_校董會 !== '-') &&
                         ((school.法團校董會 && school.法團校董會 !== '-') || (school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
                          (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.schoolBoard} value={school.法團校董會} />
+                      <InfoRow label={t.schoolBoard} value={school.法團校董會} isHtml={true} />
                       {(school.法團校董會 && school.法團校董會 !== '-') && 
                         ((school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') ||
                          (school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
                       <InfoRow label={t.supervisorTrainingRate} value={school.校監和校董_校管會主席和成員的培訓達標率} />
                       {(school.校監和校董_校管會主席和成員的培訓達標率 && school.校監和校董_校管會主席和成員的培訓達標率 !== '-') &&
                         ((school.家長教師會 && school.家長教師會 !== '-') || (school.舊生會_校友會 && school.舊生會_校友會 !== '-')) && <Separator />}
-                      <InfoRow label={t.pta} value={school.家長教師會} />
+                      <InfoRow label={t.pta} value={school.家長教師會} isHtml={true} />
                       {(school.家長教師會 && school.家長教師會 !== '-') && 
                         (school.舊生會_校友會 && school.舊生會_校友會 !== '-') && <Separator />}
-                      <InfoRow label={t.alumniAssociation} value={school.舊生會_校友會} />
+                      <InfoRow label={t.alumniAssociation} value={school.舊生會_校友會} isHtml={true} />
                     </CardContent>
                   </Card>
                 );
@@ -331,7 +338,7 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                     <InfoRow label={t.lunchEndTime} value={school.午膳結束時間} />
                     {(school.午膳結束時間 && school.午膳結束時間 !== '-' && 
                       (school.午膳安排 && school.午膳安排 !== '-')) && <Separator />}
-                    <InfoRow label={t.lunchArrangement} value={school.午膳安排} />
+                    <InfoRow label={t.lunchArrangement} value={school.午膳安排} isHtml={true} />
                   </CardContent>
                 </Card>
               )}
