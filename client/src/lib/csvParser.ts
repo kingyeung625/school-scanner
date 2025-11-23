@@ -46,7 +46,13 @@ export async function loadSchools(): Promise<School[]> {
       // Copy all fields from CSV row to school object
       Object.keys(row).forEach(key => {
         const value = row[key]?.trim() || '';
-        const cleanValue = value === '' || value === '-' ? '-' : value;
+        let cleanValue = value === '' || value === '-' ? '-' : value;
+        
+        // Remove <br> tags from Sponsoring Body field to display as single line
+        if (key === '辦學團體' && cleanValue !== '-') {
+          cleanValue = cleanValue.replace(/<br\s*\/?>/gi, '');
+        }
+        
         (school as any)[key] = cleanValue;
       });
       
