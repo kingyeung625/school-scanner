@@ -45,6 +45,42 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
     return `${name}${title}`;
   };
 
+  // Helper: Clean and split facility names for badge display
+  const splitAndCleanFacilities = (text: string): string[] => {
+    // Extract and preserve content inside parentheses (both full-width and half-width)
+    const parentheticalMap = new Map<string, string>();
+    let placeholderIndex = 0;
+    
+    // Replace parenthetical content with unique placeholders
+    const protectedText = text.replace(/[（(]([^）)]+)[）)]/g, (match) => {
+      const placeholder = `__PAREN_${placeholderIndex++}__`;
+      parentheticalMap.set(placeholder, match);
+      return placeholder;
+    });
+    
+    // Now split on delimiters (、 and 及) - these are only outside parentheses now
+    const items = protectedText.split(/[、及]/);
+    
+    // Restore the original parenthetical content
+    const restoredItems = items.map(item => {
+      let restored = item;
+      parentheticalMap.forEach((original, placeholder) => {
+        restored = restored.replace(placeholder, original);
+      });
+      return restored;
+    });
+    
+    // Clean each item: remove '等' and trailing punctuation
+    return restoredItems
+      .map(item => item
+        .trim()
+        .replace(/等/g, '')  // Remove '等' (etc.)
+        .replace(/[。，；、]+$/g, '')  // Remove trailing punctuation
+        .trim()
+      )
+      .filter(item => item.length > 0);  // Remove empty items
+  };
+
   const InfoRow = ({ label, value, icon: Icon, isHtml }: { label: string; value?: string; icon?: any; isHtml?: boolean }) => {
     if (!value || value === '-') return null;
     
@@ -845,9 +881,9 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       <div>
                         <p className="text-xs text-muted-foreground mb-2">{t.specialRooms}</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {school.特別室.split('、').map((room, idx) => (
+                          {splitAndCleanFacilities(school.特別室).map((room, idx) => (
                             <Badge key={idx} variant="outline" className="text-xs">
-                              {convertText(room.trim())}
+                              {convertText(room)}
                             </Badge>
                           ))}
                         </div>
@@ -861,9 +897,9 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       <div>
                         <p className="text-xs text-muted-foreground mb-2">{t.otherFacilities}</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {school.其他學校設施.split('、').map((facility, idx) => (
+                          {splitAndCleanFacilities(school.其他學校設施).map((facility, idx) => (
                             <Badge key={idx} variant="outline" className="text-xs">
-                              {convertText(facility.trim())}
+                              {convertText(facility)}
                             </Badge>
                           ))}
                         </div>
@@ -877,9 +913,9 @@ export default function SchoolDetail({ school, onClose }: SchoolDetailProps) {
                       <div>
                         <p className="text-xs text-muted-foreground mb-2">{t.senSupportFacilities}</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {school.支援有特殊教育需要學生的設施.split('、').map((facility, idx) => (
+                          {splitAndCleanFacilities(school.支援有特殊教育需要學生的設施).map((facility, idx) => (
                             <Badge key={idx} variant="outline" className="text-xs">
-                              {convertText(facility.trim())}
+                              {convertText(facility)}
                             </Badge>
                           ))}
                         </div>
