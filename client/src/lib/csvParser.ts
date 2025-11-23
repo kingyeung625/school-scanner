@@ -48,9 +48,17 @@ export async function loadSchools(): Promise<School[]> {
         const value = row[key]?.trim() || '';
         let cleanValue = value === '' || value === '-' ? '-' : value;
         
-        // Remove <br> tags from Sponsoring Body field to display as single line
-        if (key === '辦學團體' && cleanValue !== '-') {
-          cleanValue = cleanValue.replace(/<br\s*\/?>/gi, '');
+        // Remove <br> and other HTML tags from specific fields that should display as plain text
+        if (cleanValue !== '-') {
+          // Fields that should be single-line (remove <br> tags)
+          if (key === '辦學團體') {
+            cleanValue = cleanValue.replace(/<br\s*\/?>/gi, '');
+          }
+          
+          // Fields that are comma-separated lists displayed as badges (remove all HTML tags)
+          if (key === '特別室' || key === '其他學校設施' || key === '支援有特殊教育需要學生的設施') {
+            cleanValue = cleanValue.replace(/<[^>]+>/g, '');
+          }
         }
         
         (school as any)[key] = cleanValue;
