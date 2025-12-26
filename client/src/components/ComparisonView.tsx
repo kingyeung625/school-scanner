@@ -41,6 +41,27 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
     }
   };
 
+  // 創建可重用的學校名稱標題組件（用於 Accordion 區塊內）
+  const SchoolNamesHeader = ({ className = '' }: { className?: string }) => (
+    <div className={`border rounded-md bg-muted/50 mb-4 ${className}`}>
+      <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
+        <div className="p-3 font-semibold text-sm">
+          {t.schoolName}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {schools.map((school, index) => (
+            <div
+              key={school.id}
+              className={`p-3 font-medium text-sm ${index !== schools.length - 1 ? 'border-b md:border-b-0 md:border-r' : ''}`}
+            >
+              {convertText(school.學校名稱)}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   const ComparisonRow = ({ label, getValue }: { label: string; getValue: (school: School) => string | undefined }) => (
     <div className="border-b last:border-b-0">
       <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
@@ -55,6 +76,12 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 key={school.id}
                 className={`p-4 ${index !== schools.length - 1 ? 'border-b md:border-b-0 md:border-r' : ''}`}
               >
+                {/* 移動設備上顯示學校名稱標籤 */}
+                <div className="md:hidden mb-2 pb-2 border-b">
+                  <span className="text-xs font-semibold text-primary">
+                    {convertText(school.學校名稱)}
+                  </span>
+                </div>
                 <div 
                   className="text-sm leading-relaxed [&_br]:block [&_br]:my-1"
                   dangerouslySetInnerHTML={{ __html: value ? convertText(value) : '-' }}
@@ -138,6 +165,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonBasicInfo}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.region} getValue={(s) => s.區域} />
                   <ComparisonRow label={t.schoolNet} getValue={(s) => s.小一學校網} />
@@ -162,6 +190,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonOperations}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.generalArrivalTime} getValue={(s) => s.一般上學時間} />
                   <ComparisonRow label={t.generalDismissalTime} getValue={(s) => s.一般放學時間} />
@@ -180,6 +209,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonFees}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.tuition} getValue={(s) => s.學費} />
                   <ComparisonRow label={t.tuitionReduction} getValue={(s) => s.學費減免} />
@@ -198,6 +228,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonPhilosophy}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.mission} getValue={(s) => s.辦學宗旨} />
                   <ComparisonRow label={t.schoolCulture} getValue={(s) => s.校風} />
@@ -211,6 +242,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonTeaching}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.classTeachingMode} getValue={(s) => s.班級教學模式} />
                   <ComparisonRow label={t.classStructureRemarks} getValue={(s) => s.班級結構備註} />
@@ -226,6 +258,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonAssessment}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.testCountYear1} getValue={(s) => s.全年全科測驗次數_一年級} />
                   <ComparisonRow label={t.examCountYear1} getValue={(s) => s.全年全科考試次數_一年級} />
@@ -252,6 +285,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonCurriculum}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.curriculumDevelopment} getValue={(s) => s.小學教育課程更新重點的發展} />
                   <ComparisonRow label={t.genericSkills} getValue={(s) => s.共通能力的培養} />
@@ -267,6 +301,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonSupport}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.studentDiversity} getValue={(s) => s.全校參與照顧學生的多樣性} />
                   <ComparisonRow label={t.inclusiveEducation} getValue={(s) => s.全校參與模式融合教育} />
@@ -281,6 +316,7 @@ export default function ComparisonView({ schools, onClose, onRemove }: Compariso
                 {t.comparisonSchoolLife}
               </AccordionTrigger>
               <AccordionContent>
+                <SchoolNamesHeader />
                 <div className="border-t">
                   <ComparisonRow label={t.healthyCampusLife} getValue={(s) => s.健康校園生活} />
                   <ComparisonRow label={t.wholePerson} getValue={(s) => s.全方位學習} />

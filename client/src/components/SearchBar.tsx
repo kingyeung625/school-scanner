@@ -20,7 +20,7 @@ export default function SearchBar({ value, onChange, placeholder, 'data-testid':
         placeholder={placeholder || t.searchPlaceholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="pl-10 h-12"
+        className="pl-10 h-10"
         data-testid={testId || "input-search"}
       />
     </div>

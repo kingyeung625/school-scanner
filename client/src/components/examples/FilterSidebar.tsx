@@ -6,12 +6,14 @@ import type { FilterState } from '@shared/school-schema';
 export default function FilterSidebarExample() {
   const [filters, setFilters] = useState<FilterState>({
     區域: [],
-    學校類別1: [],
+    校網: [],
+    資助類型: [],
     學生性別: [],
     宗教: [],
     教學語言: [],
-    校網: [],
-    師資: [],
+    關聯學校: [],
+    辦學團體: [],
+    課業安排: [],
     searchQuery: '',
   });
 

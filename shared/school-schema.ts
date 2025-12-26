@@ -140,6 +140,7 @@ export interface FilterState {
   教學語言: string[];
   關聯學校: string[];
   辦學團體: string[];
+  課業安排: string[];
   searchQuery: string;
 }
 

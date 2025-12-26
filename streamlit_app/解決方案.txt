@@ -1,0 +1,102 @@
+========================================
+Streamlit 未檢測到 - 解決方案
+========================================
+
+問題：bat 文件提示 "未檢測到 streamlit"
+
+原因：
+1. Streamlit 未安裝
+2. Streamlit 已安裝但不在 PATH 環境變量中
+3. 使用了不同的 Python 環境
+
+========================================
+解決方法（按順序嘗試）
+========================================
+
+方法 1: 使用更新的 bat 文件（推薦）
+----------------------------------------
+已更新 bat 文件，現在使用 "python -m streamlit" 方式運行
+這樣可以避免 PATH 問題。
+
+只需雙擊 "啟動應用.bat" 或 "啟動應用_完整版.bat" 即可。
+
+方法 2: 手動安裝依賴
+----------------------------------------
+1. 打開 CMD 或 PowerShell
+2. 進入 streamlit_app 目錄：
+   cd /d D:\Users\user\Desktop\school_scanner_crusor\streamlit_app
+
+3. 運行安裝命令：
+   python -m pip install streamlit pandas opencc-python-reimplemented
+
+4. 或者使用 requirements.txt：
+   python -m pip install -r requirements.txt
+
+方法 3: 使用安裝腳本
+----------------------------------------
+雙擊 "安裝依賴.bat" 文件，它會自動：
+- 檢查 Python
+- 升級 pip
+- 安裝所有依賴
+- 驗證安裝
+
+方法 4: 在 CMD 中直接運行
+----------------------------------------
+不使用 bat 文件，直接在 CMD 中運行：
+
+1. 打開 CMD
+2. 進入目錄：
+   cd /d D:\Users\user\Desktop\school_scanner_crusor\streamlit_app
+
+3. 運行：
+   python -m streamlit run app.py
+
+方法 5: 檢查 Python 環境
+----------------------------------------
+如果以上方法都不行，可能是 Python 環境問題：
+
+1. 檢查 Python 版本：
+   python --version
+   （應該是 3.8 或更高）
+
+2. 檢查 pip 是否可用：
+   python -m pip --version
+
+3. 檢查已安裝的包：
+   python -m pip list | findstr streamlit
+
+4. 如果 streamlit 已安裝但無法運行：
+   - 確保使用同一個 Python 環境
+   - 嘗試重新安裝：python -m pip uninstall streamlit
+   - 然後：python -m pip install streamlit
+
+========================================
+驗證安裝
+========================================
+
+運行以下命令驗證：
+
+python -c "import streamlit; print('Streamlit 版本:', streamlit.__version__)"
+python -c "import pandas; print('Pandas 版本:', pandas.__version__)"
+python -c "import opencc; print('OpenCC 已安裝')"
+
+如果都能正常顯示版本號，說明安裝成功。
+
+========================================
+常見錯誤
+========================================
+
+錯誤: "python 不是內部或外部命令"
+解決: Python 未安裝或未添加到 PATH
+      - 安裝 Python 時選擇 "Add Python to PATH"
+      - 或手動添加 Python 到系統 PATH
+
+錯誤: "pip 不是內部或外部命令"
+解決: 使用 "python -m pip" 代替 "pip"
+
+錯誤: "Permission denied" 或權限錯誤
+解決: 使用用戶安裝：python -m pip install --user streamlit
+
+========================================
+
+
